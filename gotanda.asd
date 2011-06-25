@@ -10,7 +10,8 @@
 (defsystem gotanda
   :version "0.1-SNAPSHOT"
   :depends-on (:caveman
-               :cl-annot)
+               :cl-annot
+               :elephant)
   :components ((:module "lib"
                 :components
                 ((:file "gotanda")

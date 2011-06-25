@@ -5,7 +5,9 @@
         :clack.middleware.clsql)
   (:shadow :stop)
   (:import-from :caveman.app
-                :<app>))
+                :<app>)
+  (:import-from :elephant
+                :open-store))
 
 (cl-annot:enable-annot-syntax)
 
@@ -29,6 +31,7 @@
 
 @export
 (defun start (&key (mode :dev) (debug t) lazy)
+  (open-store '(:clsql (:sqlite3 "test.db")))
   (caveman.app:start *app* :mode mode :debug debug :lazy lazy))
 
 @export
