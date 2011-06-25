@@ -53,8 +53,8 @@
   (awhen (find-task-by-id (getf params :id))
     (drop-instance it)))
 
-@url GET "/?:device?/tasks"
-(defun tasks (params)
+@url GET "/?:device?/all-tasks"
+(defun all-tasks (params)
   "Get task list."
   @ignore params
   (princ-to-string (get-instances-by-class '<task>)))

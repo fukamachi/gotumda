@@ -27,32 +27,32 @@
       index-page
       "index (pc)"))
 
-(diag "tasks")
-(let ((tasks-page (http-request "http://localhost:4242/tasks")))
-  (is tasks-page "" "tasks")
-  (is (http-request "http://localhost:4242/pc/tasks")
+(diag "all-tasks")
+(let ((tasks-page (http-request "http://localhost:4242/all-tasks")))
+  (is tasks-page "" "all-tasks")
+  (is (http-request "http://localhost:4242/pc/all-tasks")
       tasks-page
-      "tasks (pc)"))
+      "all-tasks (pc)"))
 (is (flex:octets-to-string
-     (http-request "http://localhost:4242/api/tasks"))
+     (http-request "http://localhost:4242/api/all-tasks"))
     "[]"
-    "tasks (api)")
+    "all-tasks (api)")
 
 (diag "update")
 (http-request "http://localhost:4242/update"
               :method :POST
               :parameters '(("body" . "Buy a milk")))
 
-(diag "tasks 2")
-(let ((tasks-page (http-request "http://localhost:4242/tasks")))
-  (is tasks-page "" "tasks")
-  (is (http-request "http://localhost:4242/pc/tasks")
+(diag "all-tasks 2")
+(let ((tasks-page (http-request "http://localhost:4242/all-tasks")))
+  (is tasks-page "" "all-tasks")
+  (is (http-request "http://localhost:4242/pc/all-tasks")
       tasks-page
-      "tasks (pc)"))
+      "all-tasks (pc)"))
 (is (flex:octets-to-string
-     (http-request "http://localhost:4242/api/tasks"))
+     (http-request "http://localhost:4242/api/all-tasks"))
     "[]"
-    "tasks (api)")
+    "all-tasks (api)")
 
 (diag "Stopping..")
 
