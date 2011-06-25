@@ -1,23 +1,34 @@
 (clack.util:namespace gotumda.controller
   (:use :cl
         :caveman
-        :gotumda)
+        :gotumda
+        :anaphora)
   (:import-from :gotumda.view.emb
-                :render))
+                :render)
+  (:import-from :gotumda.model
+                :<task>)
+  (:import-from :elephant
+                :get-instances-by-class)
+  (:import-from :clack.response
+                :headers))
 
 (cl-annot:enable-annot-syntax)
 
 @url ANY "/api/*"
 (defun api-controller (params)
   @ignore params
-  (next-route)
-  )
+  (sunless (headers *response* :content-type)
+    (setf it
+        "application/json"))
+  (next-route))
 
-@url ANY "/pc/*"
+@url ANY "/?p?c?/*"
 (defun pc-controller (params)
   @ignore params
-  (next-route)
-  )
+  (sunless (headers *response* :content-type)
+    (setf it
+          "text/html"))
+  (next-route))
 
 @url GET "/?:device?/"
 (defun index (params)

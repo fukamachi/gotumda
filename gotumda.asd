@@ -11,7 +11,8 @@
   :version "0.1-SNAPSHOT"
   :depends-on (:caveman
                :cl-annot
-               :elephant)
+               :elephant
+               :anaphora)
   :components ((:module "lib"
                 :components
                 ((:file "gotumda")
