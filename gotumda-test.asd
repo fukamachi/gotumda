@@ -11,7 +11,10 @@
   :author "Eitarow"
   :license "Apache"
   :depends-on (:gotumda
-               :cl-test-more)
+               :cl-test-more
+               :drakma
+               :flexi-streams
+               :cl-fad)
   :components ((:module "t"
                 :components
                 ((:file "gotumda")))))
