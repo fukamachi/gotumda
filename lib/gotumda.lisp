@@ -7,7 +7,8 @@
   (:import-from :caveman.app
                 :<app>)
   (:import-from :elephant
-                :open-store))
+                :open-store
+                :close-store))
 
 (cl-annot:enable-annot-syntax)
 
@@ -31,9 +32,13 @@
 
 @export
 (defun start (&key (mode :dev) (debug t) lazy)
-  (open-store '(:clsql (:sqlite3 "test.db")))
-  (caveman.app:start *app* :mode mode :debug debug :lazy lazy))
+  (caveman.app:start *app* :mode mode :debug debug :lazy lazy)
+  (let* ((config (caveman.app:config *app*))
+         (dbtype (getf config :database-type))
+         (dbspec (getf config :database-connection-spec)))
+    (open-store `(:clsql (,dbtype ,dbspec)))))
 
 @export
 (defun stop ()
+  (close-store)
   (caveman.app:stop *app*))

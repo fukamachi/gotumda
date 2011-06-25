@@ -6,7 +6,7 @@
   :server :hunchentoot
   :port 8080
   :database-type :sqlite3
-  :database-connection-spec (,(namestring
-                               (asdf:system-relative-pathname
-                                :gotumda
-                                "sqlite3.db"))))
+  :database-connection-spec ,(namestring
+                              (asdf:system-relative-pathname
+                               :gotumda
+                               "sqlite3.db")))
