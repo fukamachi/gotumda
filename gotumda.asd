@@ -22,4 +22,5 @@
                (:module "src"
                 :depends-on ("lib")
                 :components
-                ((:file "controller")))))
+                ((:file "controller")
+                 (:file "model")))))
