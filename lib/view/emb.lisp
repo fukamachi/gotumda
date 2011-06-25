@@ -1,4 +1,4 @@
-(clack.util:namespace gotanda.view.emb
+(clack.util:namespace gotumda.view.emb
   (:use :cl)
   (:import-from :caveman
                 :config))

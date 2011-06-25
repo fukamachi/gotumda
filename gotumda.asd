@@ -1,22 +1,22 @@
 #|
-  This file is a part of gotanda project.
+  This file is a part of Gotumda project.
 |#
 
 (in-package :cl-user)
-(defpackage gotanda-asd
+(defpackage gotumda-asd
   (:use :cl :asdf))
-(in-package :gotanda-asd)
+(in-package :gotumda-asd)
 
-(defsystem gotanda
+(defsystem gotumda
   :version "0.1-SNAPSHOT"
   :depends-on (:caveman
                :cl-annot
                :elephant)
   :components ((:module "lib"
                 :components
-                ((:file "gotanda")
+                ((:file "gotumda")
                  (:module "view"
-                  :depends-on ("gotanda")
+                  :depends-on ("gotumda")
                   :components
                   ((:file "emb")))))
                (:module "src"

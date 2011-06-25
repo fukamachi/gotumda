@@ -1,4 +1,4 @@
-(clack.util:namespace gotanda
+(clack.util:namespace gotumda
   (:use :cl
         :clack
         :clack.builder
@@ -12,12 +12,12 @@
 (cl-annot:enable-annot-syntax)
 
 @export
-(defclass gotanda (<app>) ())
+(defclass gotumda (<app>) ())
 
 @export
-(defvar *app* (make-instance 'gotanda))
+(defvar *app* (make-instance 'gotumda))
 
-(defmethod build ((this gotanda) app)
+(defmethod build ((this gotumda) app)
   (call-next-method
    this
    (builder

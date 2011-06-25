@@ -1,8 +1,8 @@
-(clack.util:namespace gotanda.controller
+(clack.util:namespace gotumda.controller
   (:use :cl
         :caveman
-        :gotanda)
-  (:import-from :gotanda.view.emb
+        :gotumda)
+  (:import-from :gotumda.view.emb
                 :render))
 
 (cl-annot:enable-annot-syntax)
