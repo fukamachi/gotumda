@@ -2,7 +2,9 @@
   (:use :cl
         :caveman)
   (:import-from :elephant
-                :persistent-metaclass)
+                :persistent-metaclass
+                :*store-controller*
+                :controller-recreate-instance)
   (:import-from :clack.response
                 :headers))
 
@@ -44,3 +46,12 @@
           "{\"id\":\"~A\",\"body\":\"~A\"}"
           (slot-value this 'elephant::oid)
           (body this)))
+
+@export
+(defun find-task-by-id (oid)
+  (let ((task
+         (elephant::controller-recreate-instance
+          *store-controller*
+          oid '<task>)))
+    (when (slot-boundp task 'body)
+      task)))
