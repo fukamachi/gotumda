@@ -42,7 +42,9 @@
 @url POST "/?:device?/update"
 (defun update (params)
   "Create/Edit a task."
-  (let ((task (find-task-by-id (getf params :id))))
+  (let ((task (aif (getf params :id)
+                   (find-task-by-id it)
+                   (make-instance '<task>))))
     (setf (task-body task) (getf params :body))))
 
 @url POST "/?:device?/destroy/:id"
