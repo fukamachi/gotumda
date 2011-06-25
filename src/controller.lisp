@@ -19,13 +19,27 @@
   (next-route)
   )
 
-@url GET "/?:dev?/"
+@url GET "/?:device?/"
 (defun index (params)
+  "Show index page."
   (render
    "index.tmpl"
    params))
 
-@url POST "/?:dev?/update"
+@url POST "/?:device?/update"
 (defun update (params)
+  "Create/Edit a task."
+  @ignore params
+  )
+
+@url POST "/?:device?/destroy/:id"
+(defun destroy (params)
+  "Delete a task."
+  @ignore params
+  )
+
+@url GET "/?:device?/tasks"
+(defun tasks (params)
+  "Get task list."
   @ignore params
   )
