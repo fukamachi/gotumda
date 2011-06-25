@@ -1,7 +1,5 @@
 (clack.util:namespace gotumda.model
-  (:use :cl
-        :caveman
-        :gotumda)
+  (:use :cl)
   (:import-from :elephant
                 :persistent-metaclass))
 
@@ -17,6 +15,6 @@
             :accessor tags))
   (:metaclass persistent-metaclass))
 
-(defmethod initialize-method :after ((this <task>) &key)
+(defmethod initialize-instance :after ((this <task>) &key)
   ;; TODO: read `body' and put `tags'.
   )
