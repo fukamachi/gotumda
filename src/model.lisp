@@ -6,7 +6,8 @@
                 :*store-controller*
                 :controller-recreate-instance)
   (:import-from :clack.response
-                :headers))
+                :headers)
+  (:export :task-body))
 
 (cl-annot:enable-annot-syntax)
 
@@ -14,7 +15,7 @@
 (defclass <task> ()
      ((body :type string
             :initarg body
-            :accessor body)
+            :accessor task-body)
       (tags :type list
             :initform nil
             :accessor tags))
@@ -38,14 +39,14 @@
   "HTML representation of `<task>'."
   (format stream
           "~A"
-          (body this)))
+          (task-body this)))
 
 (defmethod print-object-json ((this <task>) stream)
   "JSON representation of `<task>'."
   (format stream
           "{\"id\":\"~A\",\"body\":\"~A\"}"
           (slot-value this 'elephant::oid)
-          (body this)))
+          (task-body this)))
 
 @export
 (defun find-task-by-id (oid)

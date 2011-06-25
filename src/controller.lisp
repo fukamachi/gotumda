@@ -6,7 +6,9 @@
   (:import-from :gotumda.view.emb
                 :render)
   (:import-from :gotumda.model
-                :<task>)
+                :<task>
+                :task-body
+                :find-task-by-id)
   (:import-from :elephant
                 :get-instances-by-class)
   (:import-from :clack.response
@@ -40,12 +42,13 @@
 @url POST "/?:device?/update"
 (defun update (params)
   "Create/Edit a task."
-  (make-instance '<task>))
+  (let ((task (find-task-by-id (getf params :id))))
+    (setf (task-body task) (getf params :body))))
 
 @url POST "/?:device?/destroy/:id"
 (defun destroy (params)
   "Delete a task."
-  (awhen (gotumda.model:find-task-by-id (getf params :id))
+  (awhen (find-task-by-id (getf params :id))
     (drop-instance it)))
 
 @url GET "/?:device?/tasks"
