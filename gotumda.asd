@@ -8,6 +8,8 @@
 (in-package :gotumda-asd)
 
 (defsystem gotumda
+  :author "Eitarow Fukamachi"
+  :license "Apache"
   :version "0.1-SNAPSHOT"
   :depends-on (:caveman
                :cl-annot

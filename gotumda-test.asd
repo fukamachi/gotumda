@@ -8,8 +8,8 @@
 (in-package :gotumda-test-asd)
 
 (defsystem gotumda-test
-  :author ""
-  :license ""
+  :author "Eitarow"
+  :license "Apache"
   :depends-on (:gotumda
                :cl-test-more)
   :components ((:module "t"
