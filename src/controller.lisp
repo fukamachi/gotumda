@@ -58,3 +58,8 @@
   "Get task list."
   @ignore params
   (princ-to-string (get-instances-by-class '<task>)))
+
+@url GET "/?:device?/task/:id"
+(defun task (params)
+  (awhen (find-task-by-id (getf params :id))
+    (princ-to-string it)))
