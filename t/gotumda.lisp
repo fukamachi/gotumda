@@ -9,7 +9,8 @@
         :drakma
         :flexi-streams
         :cl-fad
-        :cl-test-more))
+        :cl-test-more
+        :elephant))
 (in-package :gotumda-test)
 
 (plan nil)
@@ -56,9 +57,8 @@
 
 (diag "Stopping..")
 
-(map nil
-     #'elephant:drop-instance
-     (elephant:get-instances-by-class 'gotumda.model:<task>))
+(drop-instances
+ (get-instances-by-class 'gotumda.model:<task>))
 
 (gotumda:stop)
 

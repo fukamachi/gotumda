@@ -14,7 +14,8 @@
                :cl-test-more
                :drakma
                :flexi-streams
-               :cl-fad)
+               :cl-fad
+               :elephant)
   :components ((:module "t"
                 :components
                 ((:file "gotumda")))))
