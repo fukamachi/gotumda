@@ -30,6 +30,7 @@
 (defun update (params)
   "Create/Edit a task."
   @ignore params
+  (make-instance '<task>)
   )
 
 @url POST "/?:device?/destroy/:id"
@@ -42,4 +43,5 @@
 (defun tasks (params)
   "Get task list."
   @ignore params
+  (princ-to-string (get-instances-by-class '<task>))
   )
