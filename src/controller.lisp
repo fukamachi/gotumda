@@ -27,14 +27,6 @@
           "application/json"))
   (next-route))
 
-@url ANY "/?p?c?/*"
-(defun pc-controller (params)
-  @ignore params
-  (sunless (headers *response* :content-type)
-    (setf it
-          "text/html"))
-  (next-route))
-
 @url GET "/"
 (defun index (params)
   "Show index page."
