@@ -21,40 +21,37 @@
 (diag "Starting..")
 (gotumda:start :mode "test")
 
-(diag "all-tasks")
-(is (flex:octets-to-string
-     (http-request "http://localhost:4242/api/all-tasks"))
-    "[]"
-    "all-tasks (api)")
+(is (request-json "api/all-tasks")
+    '()
+    "no task")
 
-(diag "new")
-(let ((task
-       (with-input-from-string
-           (s (flex:octets-to-string
-               (http-request "http://localhost:4242/api/update"
-                :method :POST
-                :parameters '(("body" . "Buy a milk")))))
-         (json:decode-json s))))
-  (is (cdr (assoc :body task))
-      "Buy a milk")
+(defvar task nil)
+(setf task
+      (request-json "api/update"
+                    :method :POST
+                    :parameters '(("body" . "Buy a milk"))))
 
-  (diag "all-tasks 2")
-  (is (flex:octets-to-string
-       (http-request "http://localhost:4242/api/all-tasks"))
-      (format nil
-              "[{\"id\":\"~A\",\"body\":\"Buy a milk\"}]"
-              (cdr (assoc :id task)))
-      "all-tasks (api)")
+(is (cdr (assoc :body task))
+    "Buy a milk"
+    "create new task")
 
-  (diag "update")
-  (is (flex:octets-to-string
-       (http-request "http://localhost:4242/api/update"
-        :method :POST
-        :parameters `(("id" . ,(cdr (assoc :id task)))
-                      ("body" . "Buy eggs"))))
-      (format nil
-              "{\"id\":\"~A\",\"body\":\"Buy eggs\"}"
-              (cdr (assoc :id task)))))
+(is (request-json "api/all-tasks")
+    `(((:id . ,(cdr (assoc :id task)))
+       (:body . "Buy a milk")))
+    "one task")
+
+(is (request-json "api/update"
+                  :method :POST
+                  :parameters `(("id" . ,(cdr (assoc :id task)))
+                                ("body" . "Buy eggs")))
+    `((:id . ,(cdr (assoc :id task)))
+      (:body . "Buy eggs"))
+    "edit the task")
+
+(is (request-json "api/all-tasks")
+    `(((:id . ,(cdr (assoc :id task)))
+       (:body . "Buy eggs")))
+    "one task")
 
 (diag "Stopping..")
 
@@ -64,3 +61,19 @@
 (gotumda:stop)
 
 (finalize)
+
+(defun request-json (url &rest args)
+  "HTTP request to the url and return the result as a decoded JSON.
+Note the url doesn't contain http://localhost:4242/.
+
+Example:
+  (request-json \"api/update\"
+                :method :POST
+                :parameters '((\"body\" . \"Buy a milk\")))
+"
+  (with-input-from-string
+      (s (flex:octets-to-string
+          (apply #'http-request
+           (concatenate 'string "http://localhost:4242/" url)
+           args)))
+    (json:decode-json s)))
