@@ -14,7 +14,8 @@
   :depends-on (:caveman
                :cl-annot
                :elephant
-               :anaphora)
+               :anaphora
+               :trivial-shell)
   :components ((:module "lib"
                 :components
                 ((:file "gotumda")

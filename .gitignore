@@ -7,3 +7,4 @@
 sqlite3.db
 t/test.db
 log
+deps.js

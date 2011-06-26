@@ -8,7 +8,9 @@
                 :<app>)
   (:import-from :elephant
                 :open-store
-                :close-store))
+                :close-store)
+  (:import-from :trivial-shell
+                :shell-command))
 
 (cl-annot:enable-annot-syntax)
 
@@ -31,11 +33,24 @@
     app)))
 
 @export
+(defun reload ()
+  (let ((config (caveman.app:config *app*)))
+    (trivial-shell:shell-command
+     (format nil
+      "python ~A~:*closure-library/closure/bin/build/depswriter.py --root_with_prefix=\"~A~:*got ../../../got\" --output_file=~Adeps.js"
+      (merge-pathnames
+       (merge-pathnames
+        #p"static/js/"
+        (getf config :static-path))
+       (getf config :application-root))))))
+
+@export
 (defun start (&key (mode :dev) (debug t) lazy)
   (caveman.app:start *app* :mode mode :debug debug :lazy lazy)
   (let* ((config (caveman.app:config *app*))
          (dbtype (getf config :database-type))
          (dbspec (getf config :database-connection-spec)))
+    (reload)
     (open-store `(:clsql (,dbtype ,dbspec)))))
 
 @export
