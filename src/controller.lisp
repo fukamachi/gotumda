@@ -21,7 +21,7 @@
   @ignore params
   (sunless (headers *response* :content-type)
     (setf it
-        "application/json"))
+          "application/json"))
   (next-route))
 
 @url ANY "/?p?c?/*"
@@ -42,10 +42,10 @@
 @url POST "/?:device?/update"
 (defun update (params)
   "Create/Edit a task."
-  (let ((task (aif (getf params :id)
+  (let ((task (aif (getf params :|id|)
                    (find-task-by-id it)
                    (make-instance '<task>))))
-    (setf (task-body task) (getf params :body))))
+    (setf (task-body task) (getf params :|body|))))
 
 @url POST "/?:device?/destroy/:id"
 (defun destroy (params)
