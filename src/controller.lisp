@@ -11,7 +11,8 @@
                 :task-body
                 :find-task-by-id)
   (:import-from :elephant
-                :get-instances-by-class)
+                :get-instances-by-class
+                :drop-instance)
   (:import-from :clack.response
                 :headers))
 
