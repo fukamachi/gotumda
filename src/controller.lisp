@@ -62,8 +62,3 @@
   @ignore params
   (format nil "[~{~A~^,~}]"
           (get-instances-by-class '<task>)))
-
-@url GET "/api/task/:id"
-(defun task (params)
-  (awhen (find-task-by-id (getf params :id))
-    (princ-to-string it)))
