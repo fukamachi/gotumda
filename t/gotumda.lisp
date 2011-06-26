@@ -10,7 +10,8 @@
         :flexi-streams
         :cl-fad
         :cl-test-more
-        :elephant))
+        :elephant
+        :json))
 (in-package :gotumda-test)
 
 (plan nil)
@@ -26,16 +27,34 @@
     "[]"
     "all-tasks (api)")
 
-(diag "update")
-(http-request "http://localhost:4242/update"
-                  :method :POST
-                  :parameters '(("body" . "Buy a milk")))
+(diag "new")
+(let ((task
+       (with-input-from-string
+           (s (flex:octets-to-string
+               (http-request "http://localhost:4242/api/update"
+                :method :POST
+                :parameters '(("body" . "Buy a milk")))))
+         (json:decode-json s))))
+  (is (cdr (assoc :body task))
+      "Buy a milk")
 
-(diag "all-tasks 2")
-(like (flex:octets-to-string
+  (diag "all-tasks 2")
+  (is (flex:octets-to-string
        (http-request "http://localhost:4242/api/all-tasks"))
-      "Buy a milk"
+      (format nil
+              "[{\"id\":\"~A\",\"body\":\"Buy a milk\"}]"
+              (cdr (assoc :id task)))
       "all-tasks (api)")
+
+  (diag "update")
+  (is (flex:octets-to-string
+       (http-request "http://localhost:4242/api/update"
+        :method :POST
+        :parameters `(("id" . ,(cdr (assoc :id task)))
+                      ("body" . "Buy eggs"))))
+      (format nil
+              "{\"id\":\"~A\",\"body\":\"Buy eggs\"}"
+              (cdr (assoc :id task)))))
 
 (diag "Stopping..")
 
