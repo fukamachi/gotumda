@@ -41,13 +41,13 @@ Example:
 (drop-instances
  (get-instances-by-class 'gotumda.model:<task>))
 
-(is (request-json "api/all-tasks")
+(is (request-json "api/all-tasks.json")
     '()
     "no task")
 
 (defvar task nil)
 (setf task
-      (request-json "api/update"
+      (request-json "api/update.json"
                     :method :POST
                     :parameters '(("body" . "Buy a milk"))))
 
@@ -55,12 +55,12 @@ Example:
     "Buy a milk"
     "create new task")
 
-(is (request-json "api/all-tasks")
+(is (request-json "api/all-tasks.json")
     `(((:id . ,(cdr (assoc :id task)))
        (:body . "Buy a milk")))
     "one task")
 
-(is (request-json "api/update"
+(is (request-json "api/update.json"
                   :method :POST
                   :parameters `(("id" . ,(cdr (assoc :id task)))
                                 ("body" . "Buy eggs")))
@@ -68,17 +68,17 @@ Example:
       (:body . "Buy eggs"))
     "edit the task")
 
-(is (request-json "api/all-tasks")
+(is (request-json "api/all-tasks.json")
     `(((:id . ,(cdr (assoc :id task)))
        (:body . "Buy eggs")))
     "one task")
 
-(ok (request-json "api/destroy"
+(ok (request-json "api/destroy.json"
                   :method :POST
                   :parameters `(("id" . ,(cdr (assoc :id task)))))
     "delete the task")
 
-(is (request-json "api/all-tasks")
+(is (request-json "api/all-tasks.json")
     '()
     "no task")
 
