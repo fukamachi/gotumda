@@ -7,6 +7,7 @@
                 :render)
   (:import-from :gotumda.model
                 :<task>
+                :task-id
                 :task-body
                 :find-task-by-id)
   (:import-from :elephant
@@ -45,7 +46,8 @@
   (let ((task (aif (getf params :|id|)
                    (find-task-by-id it)
                    (make-instance '<task>))))
-    (setf (task-body task) (getf params :|body|))))
+    (setf (task-body task) (getf params :|body|))
+    (princ-to-string task)))
 
 @url POST "/api/destroy/:id"
 (defun destroy (params)

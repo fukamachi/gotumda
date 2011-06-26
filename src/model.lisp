@@ -25,6 +25,10 @@
   ;; TODO: read `body' and put `tags'.
   )
 
+@export
+(defmethod task-id ((this <task>))
+  (slot-value this 'elephant::oid))
+
 (defmethod print-object ((this <task>) stream)
   (let ((content-type (and *response*
                            (headers *response* :content-type))))
@@ -45,7 +49,7 @@
   "JSON representation of `<task>'."
   (format stream
           "{\"id\":\"~A\",\"body\":\"~A\"}"
-          (slot-value this 'elephant::oid)
+          (task-id this)
           (task-body this)))
 
 @export
