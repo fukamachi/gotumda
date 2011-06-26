@@ -50,15 +50,18 @@
     (setf (task-body task) (getf params :|body|))
     (princ-to-string task)))
 
-@url POST "/api/destroy/:id"
+@url POST "/api/destroy"
 (defun destroy (params)
   "Delete a task."
-  (awhen (find-task-by-id (getf params :id))
-    (drop-instance it)))
+  (aif (find-task-by-id (getf params :|id|))
+       (progn (drop-instance it)
+              "true")
+       "false"))
 
 @url GET "/api/all-tasks"
 (defun all-tasks (params)
   "Get task list through API. Return body is JSON."
   @ignore params
   (format nil "[~{~A~^,~}]"
-          (get-instances-by-class '<task>)))
+          (remove-if #'gotumda.model:dropped-task-p
+                     (get-instances-by-class '<task>))))

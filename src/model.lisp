@@ -29,6 +29,11 @@
 (defmethod task-id ((this <task>))
   (slot-value this 'elephant::oid))
 
+@export
+(defmethod dropped-task-p ((this <task>))
+  (not (and (task-id this)
+            (slot-boundp this 'body))))
+
 (defmethod print-object ((this <task>) stream)
   (let ((content-type (and *response*
                            (headers *response* :content-type))))

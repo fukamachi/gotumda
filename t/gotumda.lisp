@@ -11,8 +11,11 @@
         :cl-fad
         :cl-test-more
         :elephant
-        :json))
+        :json
+        :cl-annot.eval-when))
 (in-package :gotumda-test)
+
+(cl-annot:enable-annot-syntax)
 
 (plan nil)
 
@@ -20,6 +23,10 @@
 
 (diag "Starting..")
 (gotumda:start :mode "test")
+
+;; cleanup database
+(drop-instances
+ (get-instances-by-class 'gotumda.model:<task>))
 
 (is (request-json "api/all-tasks")
     '()
@@ -53,15 +60,22 @@
        (:body . "Buy eggs")))
     "one task")
 
-(diag "Stopping..")
+(ok (request-json "api/destroy"
+                  :method :POST
+                  :parameters `(("id" . ,(cdr (assoc :id task)))))
+    "delete the task")
 
-(drop-instances
- (get-instances-by-class 'gotumda.model:<task>))
+(is (request-json "api/all-tasks")
+    '()
+    "no task")
+
+(diag "Stopping..")
 
 (gotumda:stop)
 
 (finalize)
 
+@eval-always
 (defun request-json (url &rest args)
   "HTTP request to the url and return the result as a decoded JSON.
 Note the url doesn't contain http://localhost:4242/.
