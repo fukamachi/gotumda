@@ -55,9 +55,10 @@
 
 @url GET "/?:device?/all-tasks"
 (defun all-tasks (params)
-  "Get task list."
+  "Get task list through API. Return body is JSON."
   @ignore params
-  (princ-to-string (get-instances-by-class '<task>)))
+  (format nil "[~{~A~^,~}]"
+          (get-instances-by-class '<task>)))
 
 @url GET "/?:device?/task/:id"
 (defun task (params)
