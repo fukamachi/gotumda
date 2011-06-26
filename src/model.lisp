@@ -41,25 +41,12 @@
 (defmethod print-object ((this <task>) stream)
   (let ((content-type (and *response*
                            (headers *response* :content-type))))
-    (cond
-      ((string= content-type "text/html")
-       (print-object-html this stream))
-      ((string= content-type "application/json")
-       (print-object-json this stream))
-      (t (call-next-method)))))
-
-(defmethod print-object-html ((this <task>) stream)
-  "HTML representation of `<task>'."
-  (format stream
-          "~A"
-          (task-body this)))
-
-(defmethod print-object-json ((this <task>) stream)
-  "JSON representation of `<task>'."
-  (format stream
-          "{\"id\":\"~A\",\"body\":\"~A\"}"
-          (object-id this)
-          (task-body this)))
+    (if (string= content-type "application/json")
+        (format stream
+                "{\"id\":\"~A\",\"body\":\"~A\"}"
+                (object-id this)
+                (task-body this))
+        (call-next-method))))
 
 @export
 (defun get-task-by-id (id)

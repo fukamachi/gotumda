@@ -51,13 +51,9 @@
               "true")
        "false"))
 
-@url GET "/api/all-tasks.:format"
+@url GET "/api/all-tasks.json"
 (defun all-tasks (params)
-  "Get task list through API."
-  (ecase (intern (getf params :format) :keyword)
-    (:|json|
-     (format nil "[~{~A~^,~}]"
-             (get-all-tasks)))
-    (:|html|
-     (format nil "<ul>~{<li>~A</li>~}</ul>"
-             (get-all-tasks)))))
+  @ignore params
+  "Get task list through API. Return value is a JSON string."
+  (format nil "[~{~A~^,~}]"
+          (get-all-tasks)))
