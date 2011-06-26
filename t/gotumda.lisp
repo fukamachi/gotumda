@@ -11,13 +11,26 @@
         :cl-fad
         :cl-test-more
         :elephant
-        :json
-        :cl-annot.eval-when))
+        :json))
 (in-package :gotumda-test)
 
-(cl-annot:enable-annot-syntax)
-
 (plan nil)
+
+(defun request-json (url &rest args)
+  "HTTP request to the url and return the result as a decoded JSON.
+Note the url doesn't contain http://localhost:4242/.
+
+Example:
+  (request-json \"api/update\"
+                :method :POST
+                :parameters '((\"body\" . \"Buy a milk\")))
+"
+  (with-input-from-string
+      (s (flex:octets-to-string
+          (apply #'http-request
+           (concatenate 'string "http://localhost:4242/" url)
+           args)))
+    (json:decode-json s)))
 
 (gotumda:stop)
 
@@ -74,20 +87,3 @@
 (gotumda:stop)
 
 (finalize)
-
-@eval-always
-(defun request-json (url &rest args)
-  "HTTP request to the url and return the result as a decoded JSON.
-Note the url doesn't contain http://localhost:4242/.
-
-Example:
-  (request-json \"api/update\"
-                :method :POST
-                :parameters '((\"body\" . \"Buy a milk\")))
-"
-  (with-input-from-string
-      (s (flex:octets-to-string
-          (apply #'http-request
-           (concatenate 'string "http://localhost:4242/" url)
-           args)))
-    (json:decode-json s)))

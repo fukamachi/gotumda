@@ -4,10 +4,17 @@
   (:import-from :elephant
                 :persistent-metaclass
                 :*store-controller*
-                :controller-recreate-instance)
+                :controller-recreate-instance
+                :drop-instance
+                :get-instances-by-class)
   (:import-from :clack.response
                 :headers)
-  (:export :task-body))
+  (:import-from :gotumda.util.elephant
+                :object-id
+                :get-instance-by-id)
+  (:export :task-body
+           :deleted-p
+           :done-p))
 
 (cl-annot:enable-annot-syntax)
 
@@ -18,21 +25,18 @@
             :accessor task-body)
       (tags :type list
             :initform nil
-            :accessor tags))
+            :accessor tags)
+      (deleted-p :type boolean
+                 :initform nil
+                 :accessor deleted-p)
+      (done-p :type boolean
+              :initform nil
+              :accessor done-p))
   (:metaclass persistent-metaclass))
 
 (defmethod initialize-instance :after ((this <task>) &key)
   ;; TODO: read `body' and put `tags'.
   )
-
-@export
-(defmethod task-id ((this <task>))
-  (slot-value this 'elephant::oid))
-
-@export
-(defmethod dropped-task-p ((this <task>))
-  (not (and (task-id this)
-            (slot-boundp this 'body))))
 
 (defmethod print-object ((this <task>) stream)
   (let ((content-type (and *response*
@@ -54,14 +58,19 @@
   "JSON representation of `<task>'."
   (format stream
           "{\"id\":\"~A\",\"body\":\"~A\"}"
-          (task-id this)
+          (object-id this)
           (task-body this)))
 
 @export
-(defun find-task-by-id (oid)
-  (let ((task
-         (elephant::controller-recreate-instance
-          *store-controller*
-          oid '<task>)))
-    (when (slot-boundp task 'body)
+(defun get-task-by-id (id)
+  (let ((task (get-instance-by-id '<task> id)))
+    (unless (deleted-p task)
       task)))
+
+(defmethod drop-instance :after ((this <task>))
+  (setf (deleted-p this) t))
+
+@export
+(defun get-all-tasks ()
+  (remove-if #'deleted-p
+             (get-instances-by-class '<task>)))

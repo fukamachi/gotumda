@@ -7,12 +7,13 @@
                 :render)
   (:import-from :gotumda.model
                 :<task>
-                :task-id
                 :task-body
-                :find-task-by-id)
+                :get-task-by-id
+                :get-all-tasks)
   (:import-from :elephant
-                :get-instances-by-class
                 :drop-instance)
+  (:import-from :gotumda.util.elephant
+                :object-id)
   (:import-from :clack.response
                 :headers))
 
@@ -45,7 +46,7 @@
 (defun update (params)
   "Create/Edit a task."
   (let ((task (aif (getf params :|id|)
-                   (find-task-by-id it)
+                   (get-task-by-id it)
                    (make-instance '<task>))))
     (setf (task-body task) (getf params :|body|))
     (princ-to-string task)))
@@ -53,7 +54,7 @@
 @url POST "/api/destroy"
 (defun destroy (params)
   "Delete a task."
-  (aif (find-task-by-id (getf params :|id|))
+  (aif (get-task-by-id (getf params :|id|))
        (progn (drop-instance it)
               "true")
        "false"))
@@ -63,5 +64,4 @@
   "Get task list through API. Return body is JSON."
   @ignore params
   (format nil "[~{~A~^,~}]"
-          (remove-if #'gotumda.model:dropped-task-p
-                     (get-instances-by-class '<task>))))
+          (get-all-tasks)))
