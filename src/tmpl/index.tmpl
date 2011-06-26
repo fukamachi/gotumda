@@ -16,5 +16,11 @@
 
 Loading..
 
+<script type="text/javascript">
+  new got.App('<% (format t
+                         "http://~A:~A/"
+                         (caveman:config :domain)
+                         (caveman:config :port)) %>');
+</script>
 </body>
 </html>
