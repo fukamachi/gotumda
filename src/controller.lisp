@@ -32,14 +32,14 @@
           "text/html"))
   (next-route))
 
-@url GET "/?:device?/"
+@url GET "/"
 (defun index (params)
   "Show index page."
   (render
    "index.tmpl"
    params))
 
-@url POST "/?:device?/update"
+@url POST "/api/update"
 (defun update (params)
   "Create/Edit a task."
   (let ((task (aif (getf params :|id|)
@@ -47,20 +47,20 @@
                    (make-instance '<task>))))
     (setf (task-body task) (getf params :|body|))))
 
-@url POST "/?:device?/destroy/:id"
+@url POST "/api/destroy/:id"
 (defun destroy (params)
   "Delete a task."
   (awhen (find-task-by-id (getf params :id))
     (drop-instance it)))
 
-@url GET "/?:device?/all-tasks"
+@url GET "/api/all-tasks"
 (defun all-tasks (params)
   "Get task list through API. Return body is JSON."
   @ignore params
   (format nil "[~{~A~^,~}]"
           (get-instances-by-class '<task>)))
 
-@url GET "/?:device?/task/:id"
+@url GET "/api/task/:id"
 (defun task (params)
   (awhen (find-task-by-id (getf params :id))
     (princ-to-string it)))
