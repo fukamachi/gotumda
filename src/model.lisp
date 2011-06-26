@@ -23,9 +23,10 @@
      ((body :type string
             :initarg body
             :accessor task-body)
-      (tags :type list
-            :initform nil
-            :accessor tags)
+      (url :type (or null string)
+           :initarg url
+           :initform nil
+           :accessor task-url)
       (deleted-p :type boolean
                  :initform nil
                  :accessor deleted-p)
@@ -33,10 +34,6 @@
               :initform nil
               :accessor done-p))
   (:metaclass persistent-metaclass))
-
-(defmethod initialize-instance :after ((this <task>) &key)
-  ;; TODO: read `body' and put `tags'.
-  )
 
 (defmethod print-object ((this <task>) stream)
   (let ((content-type (and *response*
