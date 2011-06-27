@@ -9,6 +9,7 @@
 goog.provide('got.Task');
 
 goog.require('goog.dom');
+goog.require('goog.json');
 
 /**
  * Class for Task.
@@ -32,7 +33,7 @@ got.Task = function(params) {
    * @type {Boolean}
    * @protected
    */
-  this.isDone_ = params['isDone'];
+  this.isDone_ = goog.json.parse(params['isDone']);
 };
 
 /**

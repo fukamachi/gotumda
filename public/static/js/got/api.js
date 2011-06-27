@@ -13,6 +13,7 @@ goog.require('goog.array');
 goog.require('goog.net.XhrIo');
 goog.require('goog.net.EventType');
 goog.require('goog.events');
+goog.require('goog.uri.utils');
 
 /**
  * @param {String} baseUrl
@@ -41,5 +42,15 @@ got.Api.prototype.allTasks = function(callback) {
   );
 };
 
-got.Api.prototype.update = function(body) {
+got.Api.prototype.update = function(id, opt_body, opt_isDone) {
+  var query = {'id': id};
+  if (!(opt_body === null || opt_body === false)) {
+    query['body'] = opt_body;
+  }
+  if (arguments.length > 2) {
+    query['isDone'] = opt_isDone;
+  }
+  var xhr = new goog.net.XhrIo();
+  xhr.send(this.baseUrl + 'api/update.json', 'POST',
+           goog.uri.utils.buildQueryDataFromMap(query));
 };
