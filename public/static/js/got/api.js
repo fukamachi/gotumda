@@ -8,7 +8,7 @@
 
 goog.provide('got.Api');
 
-goog.require('got.app.Task');
+goog.require('got.Task');
 goog.require('goog.array');
 goog.require('goog.net.XhrIo');
 goog.require('goog.net.EventType');
@@ -34,7 +34,7 @@ got.Api.prototype.allTasks = function(callback) {
       var res = e.target.getResponseJson();
       var tasks = [];
       goog.array.forEach(res, function (data) {
-        var task = new got.app.Task(data['id'], data['body']);
+        var task = new got.Task(data['id'], data['body']);
         tasks.push(task);
       });
       callback(tasks);

@@ -6,14 +6,14 @@
  * @author e.arrows@gmail.com (Eitarow Fukamachi)
  */
 
-goog.provide('got.app.Task');
+goog.provide('got.Task');
 
 goog.require('goog.dom');
 
 /**
  * @constructor
  */
-got.app.Task = function(id, body) {
+got.Task = function(id, body) {
   this.id_ = id;
   this.body_ = body;
 };
@@ -21,7 +21,7 @@ got.app.Task = function(id, body) {
 /**
  * @param {Element=} element Where to render.
  */
-got.app.Task.prototype.render = function(element) {
+got.Task.prototype.render = function(element) {
   /**
    * @type {Element}
    * @protected
