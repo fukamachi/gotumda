@@ -8,7 +8,6 @@
 
 goog.provide('got.Api');
 
-goog.require('got.Task');
 goog.require('goog.array');
 goog.require('goog.net.XhrIo');
 goog.require('goog.net.EventType');
@@ -33,9 +32,7 @@ got.Api.prototype.allTasks = function(callback) {
     xhr, goog.net.EventType.COMPLETE,
     function(e) {
       var res = e.target.getResponseJson();
-      var tasks
-          = goog.array.map(res, function(data) { return new got.Task(data); });
-      callback(tasks);
+      callback(res);
     });
   xhr.send(
     this.baseUrl + 'api/all-tasks.json', 'GET'

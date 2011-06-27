@@ -19,21 +19,18 @@ goog.require('goog.json');
 got.Task = function(params) {
   /**
    * @type {Integer}
-   * @protected
    */
-  this.id_ = params['id'];
+  this.id = params['id'];
 
   /**
    * @type {String}
-   * @protected
    */
-  this.body_ = params['body'];
+  this.body = params['body'];
 
   /**
    * @type {Boolean}
-   * @protected
    */
-  this.isDone_ = goog.json.parse(params['isDone']);
+  this.isDone = goog.json.parse(params['isDone']);
 };
 
 /**
@@ -52,14 +49,14 @@ got.Task.prototype.render = function(element) {
     {'class': 'got-taskitem-done',
      'type': 'checkbox',
      'name': 'id',
-     'value': this.id_}
+     'value': this.id}
   );
-  if (this.isDone_) {
+  if (this.isDone) {
     doneCheckEl.checked = true;
   }
   taskEl.appendChild(doneCheckEl);
   var taskBodyEl = goog.dom.createDom('span', 'got-taskitem-body');
-  taskBodyEl.innerHTML = this.body_;
+  taskBodyEl.innerHTML = this.body;
   taskEl.appendChild(taskBodyEl);
   this.element_.appendChild(taskEl);
 };

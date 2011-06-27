@@ -20,49 +20,107 @@ goog.require('goog.fx.DragListDirection');
  * @constructor
  */
 got.app.PC = function(baseUrl) {
+  /**
+   * @type {got.App}
+   * @protected
+   */
   this.api_ = new got.Api(baseUrl);
+
+  this.load();
 };
 
 /**
  * Load all tasks and render them in the specified element.
- * @param {Element|String} element Element where to render tasks.
  */
-got.app.PC.prototype.loadAllTasks = function(element) {
+got.app.PC.prototype.load = function() {
   this.api_.allTasks(
     goog.bind(function(tasks) {
-      element = goog.dom.getElement(element);
-      element.innerHTML = '';
-      goog.array.forEach(tasks, function(task) {
-        task.render(element);
-      });
-      var dlg = new goog.fx.DragListGroup();
-      dlg.addDragList(element,
-                      goog.fx.DragListDirection.DOWN);
-      dlg.setDragItemHoverClass('cursor-move');
-      dlg.setDraggerElClass('cursor-move');
-      dlg.setFunctionToGetHandleForDragItem(
-        function(item) {
-          return goog.dom.getElementByClass('got-taskitem-body', item);
-        }
-      );
-      goog.events.listen(dlg, goog.fx.DragListGroup.EventType.DRAGEND,
-                         function(e) {
-                           var checkboxes = goog.dom.getElementsByClass('got-taskitem-done', element);
-                           this.api_.sortTasks(goog.array.map(checkboxes, function(box) {
-                             return box.value;
-                           }));
-                         }, false, this);
-
-      dlg.init();
-
-      var checkboxes = goog.dom.getElementsByClass('got-taskitem-done', element);
-      goog.array.forEach(checkboxes, function(checkEl) {
-        goog.events.listen(checkEl, goog.events.EventType.CLICK,
-                           function(e) {
-                             this.api_.update(
-                               e.target.value, null, e.target.checked
-                             );
-                           }, false, this);
+      var allTaskListEl = document.getElementById('got-all-tasks');
+      var curTaskListEl = document.getElementById('got-current-tasks');
+      var doneTaskListEl = document.getElementById('got-done-tasks');
+      curTaskListEl.innerHTML = '';
+      goog.array.forEach(tasks, function(taskObj) {
+        var task = new got.Task(taskObj);
+        task.render(
+          task.isDone ? doneTaskListEl : curTaskListEl
+        );
       }, this);
+
+      this.listenDragEvents_(curTaskListEl);
+      this.listenCheckEvents_(allTaskListEl);
     }, this));
+};
+
+/**
+ * Event handler fired on end of dragging.
+ * @param {goog.events.BrowserEvent}
+ * @protected
+ */
+goog.app.PC.prototype.onDragEnd_ = function(e) {
+  var checkboxes = goog.dom.getElementsByClass('got-taskitem-done', this.taskListEl_);
+  this.api_.sortTasks(goog.array.map(checkboxes, function(box) {
+    return box.value;
+  }));
+};
+
+/**
+ * Specify which element is draggable.
+ * @param {Element} item
+ * @return {Element}
+ * @protected
+ */
+goog.app.PC.prototype.getHandlerForDragItem_ = function(item) {
+  return goog.dom.getElementByClass('got-taskitem-body', item);
+};
+
+/**
+ * Listen drag events of tasks.
+ * @param {Element|String} element
+ * @protected
+ */
+goog.app.PC.prototype.listenDragEvents_ = function(element) {
+  element = goog.dom.getElement(element);
+  var dlg = new goog.fx.DragListGroup();
+  dlg.addDragList(element,
+                  goog.fx.DragListDirection.DOWN);
+  dlg.setDragItemHoverClass('cursor-move');
+  dlg.setDraggerElClass('cursor-move');
+  dlg.setFunctionToGetHandleForDragItem(
+    this.getHandlerForDragItem_
+  );
+  goog.events.listen(dlg, goog.fx.DragListGroup.EventType.DRAGEND,
+                     this.onDragEnd_ , false, this);
+
+  dlg.init();
+
+  /**
+   * @type {goog.fx.DragListGroup}
+   * @protected
+   */
+  this.dlg_ = dlg;
+};
+
+/**
+ * Event handler fired on check of checkboxes.
+ * @param {goog.events.BrowserEvent}
+ * @protected
+ */
+goog.app.PC.prototype.onCheck_ = function(e) {
+  this.api_update(
+    e.target.value, null, e.target.checked
+  );
+};
+
+/**
+ * Listen click events of checkboxes.
+ * @param {Element|String} element
+ * @protected
+ */
+goog.app.PC.prototype.listenCheckEvents_ = function(element) {
+  element = goog.dom.getElement(element);
+  var checkboxes = goog.dom.getElementsByClass('got-taskitem-done', element);
+  goog.array.forEach(checkboxes, function(checkEl) {
+    goog.events.listen(checkEl, goog.events.EventType.CLICK,
+                       this.onCheck_ , false, this);
+  }, this);
 };
