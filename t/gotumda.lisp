@@ -57,7 +57,8 @@ Example:
 
 (is (request-json "api/all-tasks.json")
     `(((:id . ,(cdr (assoc :id task)))
-       (:body . "Buy a milk")))
+       (:body . "Buy a milk")
+       (:is-done . "false")))
     "one task")
 
 (is (request-json "api/update.json"
@@ -65,13 +66,30 @@ Example:
                   :parameters `(("id" . ,(cdr (assoc :id task)))
                                 ("body" . "Buy eggs")))
     `((:id . ,(cdr (assoc :id task)))
-      (:body . "Buy eggs"))
+      (:body . "Buy eggs")
+      (:is-done . "false"))
     "edit the task")
 
 (is (request-json "api/all-tasks.json")
     `(((:id . ,(cdr (assoc :id task)))
-       (:body . "Buy eggs")))
+       (:body . "Buy eggs")
+       (:is-done . "false")))
     "one task")
+
+(is (request-json "api/update.json"
+                  :method :POST
+                  :parameters `(("id" . ,(cdr (assoc :id task)))
+                                ("isDone" . "true")))
+    `((:id . ,(cdr (assoc :id task)))
+      (:body . "Buy eggs")
+      (:is-done . "true"))
+    "done the task")
+
+(is (request-json "api/all-tasks.json")
+    `(((:id . ,(cdr (assoc :id task)))
+       (:body . "Buy eggs")
+       (:is-done . "true")))
+    "one done task")
 
 (ok (request-json "api/destroy.json"
                   :method :POST

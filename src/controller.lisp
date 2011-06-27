@@ -8,6 +8,7 @@
   (:import-from :gotumda.model
                 :<task>
                 :task-body
+                :done-p
                 :get-task-by-id
                 :get-all-tasks)
   (:import-from :elephant
@@ -42,7 +43,13 @@
    (let ((task (aif (getf params :|id|)
                     (get-task-by-id it)
                     (make-instance '<task>))))
-     (setf (task-body task) (getf params :|body|))
+     (cond
+       ((string= "false" (getf params :|isDone|))
+        (setf (done-p task) nil))
+       ((string= "true" (getf params :|isDone|))
+        (setf (done-p task) t)))
+     (when (getf params :|body|)
+       (setf (task-body task) (getf params :|body|)))
      (princ-to-string task))))
 
 @url POST "/api/destroy.json"

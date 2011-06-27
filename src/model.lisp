@@ -40,9 +40,12 @@
                            (headers *response* :content-type))))
     (if (string= content-type "application/json")
         (format stream
-                "{\"id\":\"~A\",\"body\":\"~A\"}"
+                "{\"id\":\"~A\",\"body\":\"~A\",\"isDone\":\"~A\"}"
                 (object-id this)
-                (task-body this))
+                (task-body this)
+                (if (done-p this)
+                    "true"
+                    "false"))
         (call-next-method))))
 
 @export
