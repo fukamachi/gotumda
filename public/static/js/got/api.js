@@ -32,11 +32,8 @@ got.Api.prototype.allTasks = function(callback) {
     xhr, goog.net.EventType.COMPLETE,
     function(e) {
       var res = e.target.getResponseJson();
-      var tasks = [];
-      goog.array.forEach(res, function (data) {
-        var task = new got.Task(data['id'], data['body']);
-        tasks.push(task);
-      });
+      var tasks
+          = goog.array.map(res, function(data) { return new got.Task(data); });
       callback(tasks);
     });
   xhr.send(

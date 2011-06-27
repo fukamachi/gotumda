@@ -11,11 +11,28 @@ goog.provide('got.Task');
 goog.require('goog.dom');
 
 /**
+ * Class for Task.
+ * @param {Object} params
  * @constructor
  */
-got.Task = function(id, body) {
-  this.id_ = id;
-  this.body_ = body;
+got.Task = function(params) {
+  /**
+   * @type {Integer}
+   * @protected
+   */
+  this.id_ = params['id'];
+
+  /**
+   * @type {String}
+   * @protected
+   */
+  this.body_ = params['body'];
+
+  /**
+   * @type {Boolean}
+   * @protected
+   */
+  this.isDone_ = params['isDone'];
 };
 
 /**
@@ -36,6 +53,9 @@ got.Task.prototype.render = function(element) {
      'name': 'id',
      'value': this.id_}
   );
+  if (this.isDone_) {
+    doneCheckEl.checked = true;
+  }
   taskEl.appendChild(doneCheckEl);
   var taskBodyEl = goog.dom.createDom('span', 'got-taskitem-body');
   taskBodyEl.innerHTML = this.body_;
