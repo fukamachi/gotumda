@@ -14,13 +14,22 @@
 
 <h2>All Tasks</h2>
 
+<div id="got-all-tasks">
 Loading..
+</div>
 
 <script type="text/javascript">
-  new got.App('<% (format t
-                         "http://~A:~A/"
-                         (caveman:config :domain)
-                         (caveman:config :port)) %>');
+  var app = new got.App('<% (format t
+                                    "http://~A:~A/"
+                                    (caveman:config :domain)
+                                    (caveman:config :port)) %>');
+  app.allTasks(function(tasks) {
+    var element = goog.dom.getElement('got-all-tasks');
+    element.innerHTML = '';
+    goog.array.forEach(tasks, function(task) {
+      task.render(element);
+    });
+  });
 </script>
 </body>
 </html>
