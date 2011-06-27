@@ -19,11 +19,11 @@ Loading..
 </div>
 
 <script type="text/javascript">
-  var app = new got.App('<% (format t
+  var api = new got.Api('<% (format t
                                     "http://~A:~A/"
                                     (caveman:config :domain)
                                     (caveman:config :port)) %>');
-  app.allTasks(function(tasks) {
+  api.allTasks(function(tasks) {
     var element = goog.dom.getElement('got-all-tasks');
     element.innerHTML = '';
     goog.array.forEach(tasks, function(task) {

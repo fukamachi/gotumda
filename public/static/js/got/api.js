@@ -6,7 +6,7 @@
  * @author e.arrows@gmail.com (Eitarow Fukamachi)
  */
 
-goog.provide('got.App');
+goog.provide('got.Api');
 
 goog.require('got.app.Task');
 goog.require('goog.array');
@@ -18,7 +18,7 @@ goog.require('goog.events');
  * @param {String} baseUrl
  * @constructor
  */
-got.App = function(baseUrl) {
+got.Api = function(baseUrl) {
   this.baseUrl = baseUrl;
 };
 
@@ -26,7 +26,7 @@ got.App = function(baseUrl) {
  * Request to 'api/all-tasks.json'.
  * @param {Function(Array.<Object>)} callback
  */
-got.App.prototype.allTasks = function(callback) {
+got.Api.prototype.allTasks = function(callback) {
   var xhr = new goog.net.XhrIo();
   goog.events.listen(
     xhr, goog.net.EventType.COMPLETE,
@@ -44,5 +44,5 @@ got.App.prototype.allTasks = function(callback) {
   );
 };
 
-got.App.prototype.update = function(body) {
+got.Api.prototype.update = function(body) {
 };
