@@ -3,8 +3,59 @@
 body {
   margin: 0 150px;
   line-height: 150%;
+  font-family: "Optima", "Nu Sans", Baskerville, "Times New Roman", "Arial", sans-serif;
+  background-color: #e5e5e5;
 }
 
 .cursor-move {
   cursor: move;
+}
+
+a:link {
+  color: #005585;
+}
+
+a:visited {
+  color: #485270;
+}
+
+a:hover {
+  color: #b83800;
+}
+
+#header {
+  width: 100%;
+  color: white;
+  background-color: black;
+  position: relative;
+}
+
+#container {
+  background-color: white;
+}
+
+#got-all-tasks {
+}
+
+#got-current-tasks {
+}
+
+#got-done-tasks {
+  color: gray;
+  font-size: small;
+  padding: 0 15px;
+}
+
+.got-taskitem {
+  border-bottom: 1px solid #222;
+}
+
+.got-taskitem-action {
+  visibility: hidden;
+  font-size: x-small;
+}
+
+.got-taskitem-action a {
+  display: block;
+  padding: 3px;
 }
