@@ -34,15 +34,16 @@
 
 @export
 (defun reload ()
-  (let ((config (caveman.app:config *app*)))
+  (let ((config (caveman.app:config *app*))
+        (js-dir (reduce
+                 #'merge-pathnames
+                 (list #p"static/js/"
+                       (getf config :static-path)
+                       (getf config :application-root)))))
     (trivial-shell:shell-command
      (format nil
       "python ~A~:*closure-library/closure/bin/build/depswriter.py --root_with_prefix=\"~A~:*got ../../../got\" --output_file=~Adeps.js"
-      (merge-pathnames
-       (merge-pathnames
-        #p"static/js/"
-        (getf config :static-path))
-       (getf config :application-root))))))
+      js-dir))))
 
 @export
 (defun start (&key (mode :dev) (debug t) lazy)
