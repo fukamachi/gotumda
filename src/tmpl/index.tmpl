@@ -29,6 +29,12 @@ Loading..
     goog.array.forEach(tasks, function(task) {
       task.render(element);
     });
+    var dlg = new goog.fx.DragListGroup();
+    dlg.addDragList(element,
+        goog.fx.DragListDirection.DOWN);
+    dlg.setDragItemHoverClass('cursor-move');
+    dlg.setDraggerElClass('cursor-move');
+    dlg.init();
   });
 </script>
 </body>
