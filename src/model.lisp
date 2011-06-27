@@ -1,6 +1,5 @@
 (clack.util:namespace gotumda.model
   (:use :cl
-        :anaphora
         :caveman)
   (:import-from :elephant
                 :persistent-metaclass
@@ -8,11 +7,9 @@
                 :controller-recreate-instance
                 :drop-instance
                 :get-instances-by-class
-                :make-pset
-                :find-item
-                :insert-item
                 :add-to-root
                 :get-from-root
+                :root-existsp
                 :with-transaction)
   (:import-from :clack.response
                 :headers)
@@ -25,19 +22,28 @@
 
 (cl-annot:enable-annot-syntax)
 
+(defun make-task-order (&optional initial-contents)
+  (make-array (length initial-contents)
+              :element-type 'integer
+              :fill-pointer t
+              :adjustable t
+              :initial-contents initial-contents))
+
 @export
 (defun task-order ()
   "Return a persistent collection of Elephant which represents Tasks order.
 If it doesn't exist, creates new one and add it."
-  (aif (get-from-root "task-order")
-       it
-       (with-transaction ()
-         (add-to-root "task-order" (make-pset)))))
+  (if (root-existsp "task-order")
+      (get-from-root "task-order")
+      (with-transaction ()
+        (add-to-root "task-order"
+                     (make-task-order)))))
 
 @export
 (defun (setf task-order) (order)
   (with-transaction ()
-    (add-to-root "task-order" (make-pset :items order))))
+    (add-to-root "task-order"
+                 (make-task-order order))))
 
 @export
 (defclass <task> ()
@@ -58,9 +64,10 @@ If it doesn't exist, creates new one and add it."
 
 (defmethod initialize-instance :after ((this <task>) &key)
   "Put the object ID into the task order collection."
+  (vector-push-extend (object-id this) (task-order))
   (with-transaction ()
-    (insert-item (object-id this)
-     (task-order))))
+    (add-to-root "task-order"
+                 (task-order))))
 
 (defmethod print-object ((this <task>) stream)
   (let ((content-type (and *response*
@@ -90,5 +97,10 @@ If it doesn't exist, creates new one and add it."
    (remove-if #'deleted-p
               (get-instances-by-class '<task>))
    (lambda (a b)
-     (< (find-item (object-id a) (task-order))
-        (find-item (object-id b) (task-order))))))
+     (loop with order = (task-order)
+           with a = (object-id a)
+           with b = (object-id b)
+           for id across order
+           do (cond
+                ((= a id) (return t))
+                ((= b id) (return nil)))))))

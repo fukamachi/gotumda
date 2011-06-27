@@ -15,7 +15,8 @@
                :cl-annot
                :elephant
                :anaphora
-               :trivial-shell)
+               :trivial-shell
+               :split-sequence)
   :components ((:module "lib"
                 :components
                 ((:file "gotumda")

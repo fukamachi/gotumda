@@ -98,6 +98,18 @@ Example:
        (:is-done . "false")))
     "two tasks")
 
+(is (request-json "api/sort-tasks.json"
+                  :method :POST
+                  :parameters
+                  `(("order" . ,(format nil
+                                        "~A,~A"
+                                        (cdr (assoc :id task2))
+                                        (cdr (assoc :id task))))))
+    (list
+     (parse-integer (cdr (assoc :id task2)))
+     (parse-integer (cdr (assoc :id task))))
+    "sort tasks")
+
 (is (request-json "api/update.json"
                   :method :POST
                   :parameters `(("id" . ,(cdr (assoc :id task)))
@@ -108,12 +120,12 @@ Example:
     "done a task")
 
 (is (request-json "api/all-tasks.json")
-    `(((:id . ,(cdr (assoc :id task)))
-       (:body . "Buy eggs")
-       (:is-done . "true"))
-      ((:id . ,(cdr (assoc :id task2)))
+    `(((:id . ,(cdr (assoc :id task2)))
        (:body . "Clean the kitchen")
-       (:is-done . "false")))
+       (:is-done . "false"))
+      ((:id . ,(cdr (assoc :id task)))
+       (:body . "Buy eggs")
+       (:is-done . "true")))
     "one done task")
 
 (ok (request-json "api/destroy.json"

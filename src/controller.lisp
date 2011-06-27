@@ -2,7 +2,8 @@
   (:use :cl
         :caveman
         :gotumda
-        :anaphora)
+        :anaphora
+        :split-sequence)
   (:import-from :gotumda.view.emb
                 :render)
   (:import-from :gotumda.model
@@ -10,7 +11,8 @@
                 :task-body
                 :done-p
                 :get-task-by-id
-                :get-all-tasks)
+                :get-all-tasks
+                :task-order)
   (:import-from :elephant
                 :with-transaction
                 :drop-instance)
@@ -67,3 +69,10 @@
   "Get task list through API. Return value is a JSON string."
   (format nil "[~{~A~^,~}]"
           (get-all-tasks)))
+
+@url POST "/api/sort-tasks.json"
+(defun sort-tasks (params)
+  (setf (task-order)
+        (mapcar #'parse-integer
+                (split-sequence #\, (getf params :|order|))))
+  (format nil "[~{~A~^,~}]" (coerce (task-order) 'list)))
