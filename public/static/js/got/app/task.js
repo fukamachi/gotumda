@@ -19,12 +19,6 @@ got.app.Task = function(id, body) {
 };
 
 /**
- * CSS class name for each Task items.
- * @type {String}
- */
-got.app.Task.CSS_NAME = 'got-taskitem';
-
-/**
  * @param {Element=} element Where to render.
  */
 got.app.Task.prototype.render = function(element) {
@@ -33,7 +27,18 @@ got.app.Task.prototype.render = function(element) {
    * @protected
    */
   this.element_ = goog.dom.getElement(element);
-  var taskEl =  goog.dom.createDom('div', got.app.Task.CSS_NAME);
-  taskEl.innerHTML = this.body_;
+
+  var taskEl =  goog.dom.createDom('div', 'got-taskitem');
+  var doneCheckEl = goog.dom.createDom(
+    'input',
+    {'class': 'got-taskitem-done',
+     'type': 'checkbox',
+     'name': 'id',
+     'value': this.id_}
+  );
+  taskEl.appendChild(doneCheckEl);
+  var taskBodyEl = goog.dom.createDom('span', 'got-taskitem-body');
+  taskBodyEl.innerHTML = this.body_;
+  taskEl.appendChild(taskBodyEl);
   this.element_.appendChild(taskEl);
 };

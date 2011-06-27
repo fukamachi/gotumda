@@ -34,6 +34,11 @@ Loading..
         goog.fx.DragListDirection.DOWN);
     dlg.setDragItemHoverClass('cursor-move');
     dlg.setDraggerElClass('cursor-move');
+    dlg.setFunctionToGetHandleForDragItem(
+      function(item) {
+        return goog.dom.getElementByClass('got-taskitem-body', item);
+      }
+    );
     dlg.init();
   });
 </script>
