@@ -56,7 +56,7 @@ got.app.PC.prototype.load = function() {
  * @param {goog.events.BrowserEvent} e
  * @protected
  */
-goog.app.PC.prototype.onDragEnd_ = function(e) {
+got.app.PC.prototype.onDragEnd_ = function(e) {
   var checkboxes = goog.dom.getElementsByClass('got-taskitem-done', this.taskListEl_);
   this.api_.sortTasks(goog.array.map(checkboxes, function(box) {
     return box.value;
@@ -69,7 +69,7 @@ goog.app.PC.prototype.onDragEnd_ = function(e) {
  * @return {Element}
  * @protected
  */
-goog.app.PC.prototype.getHandlerForDragItem_ = function(item) {
+got.app.PC.prototype.getHandlerForDragItem_ = function(item) {
   return goog.dom.getElementByClass('got-taskitem-body', item);
 };
 
@@ -78,7 +78,7 @@ goog.app.PC.prototype.getHandlerForDragItem_ = function(item) {
  * @param {Element|String} element
  * @protected
  */
-goog.app.PC.prototype.listenDragEvents_ = function(element) {
+got.app.PC.prototype.listenDragEvents_ = function(element) {
   element = goog.dom.getElement(element);
   var dlg = new goog.fx.DragListGroup();
   dlg.addDragList(element,
@@ -105,7 +105,7 @@ goog.app.PC.prototype.listenDragEvents_ = function(element) {
  * @param {goog.events.BrowserEvent} e
  * @protected
  */
-goog.app.PC.prototype.onCheck_ = function(e) {
+got.app.PC.prototype.onCheck_ = function(e) {
   var checkEl = e.target;
   var taskEl = goog.dom.getAncestorByClass(checkEl, 'got-taskitem');
   goog.dom.removeNode(taskEl);
@@ -126,7 +126,7 @@ goog.app.PC.prototype.onCheck_ = function(e) {
  * @param {Element|String} element
  * @protected
  */
-goog.app.PC.prototype.listenCheckEvents_ = function(element) {
+got.app.PC.prototype.listenCheckEvents_ = function(element) {
   element = goog.dom.getElement(element);
   var checkboxes = goog.dom.getElementsByClass('got-taskitem-done', element);
   goog.array.forEach(checkboxes, function(checkEl) {
