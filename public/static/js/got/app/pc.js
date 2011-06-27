@@ -53,7 +53,7 @@ got.app.PC.prototype.load = function() {
 
 /**
  * Event handler fired on end of dragging.
- * @param {goog.events.BrowserEvent}
+ * @param {goog.events.BrowserEvent} e
  * @protected
  */
 goog.app.PC.prototype.onDragEnd_ = function(e) {
@@ -102,12 +102,22 @@ goog.app.PC.prototype.listenDragEvents_ = function(element) {
 
 /**
  * Event handler fired on check of checkboxes.
- * @param {goog.events.BrowserEvent}
+ * @param {goog.events.BrowserEvent} e
  * @protected
  */
 goog.app.PC.prototype.onCheck_ = function(e) {
+  var checkEl = e.target;
+  var taskEl = goog.dom.getAncestorByClass(checkEl, 'got-taskitem');
+  goog.dom.removeNode(taskEl);
+  if (checkEl.checked) {
+    var doneTaskListEl = document.getElementById('got-done-tasks');
+    doneTaskListEl.appendChild(taskEl);
+  } else {
+    var curTaskListEl = document.getElementById('got-current-tasks');
+    curTaskListEl.appendChild(taskEl);
+  }
   this.api_update(
-    e.target.value, null, e.target.checked
+    checkEl.value, null, checkEl.checked
   );
 };
 
