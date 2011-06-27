@@ -11,6 +11,7 @@
                 :get-task-by-id
                 :get-all-tasks)
   (:import-from :elephant
+                :with-transaction
                 :drop-instance)
   (:import-from :gotumda.util.elephant
                 :object-id)
@@ -37,19 +38,21 @@
 @url POST "/api/update.json"
 (defun update (params)
   "Create/Edit a task."
-  (let ((task (aif (getf params :|id|)
-                   (get-task-by-id it)
-                   (make-instance '<task>))))
-    (setf (task-body task) (getf params :|body|))
-    (princ-to-string task)))
+  (with-transaction ()
+   (let ((task (aif (getf params :|id|)
+                    (get-task-by-id it)
+                    (make-instance '<task>))))
+     (setf (task-body task) (getf params :|body|))
+     (princ-to-string task))))
 
 @url POST "/api/destroy.json"
 (defun destroy (params)
   "Delete a task."
-  (aif (get-task-by-id (getf params :|id|))
-       (progn (drop-instance it)
-              "true")
-       "false"))
+   (aif (get-task-by-id (getf params :|id|))
+        (with-transaction ()
+         (drop-instance it)
+         "true")
+        "false"))
 
 @url GET "/api/all-tasks.json"
 (defun all-tasks (params)
