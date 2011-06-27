@@ -54,3 +54,12 @@ got.Api.prototype.update = function(id, opt_body, opt_isDone) {
   xhr.send(this.baseUrl + 'api/update.json', 'POST',
            goog.uri.utils.buildQueryDataFromMap(query));
 };
+
+/**
+ * @param {Array.<Integer>} order
+ */
+got.Api.prototype.sortTasks = function(order) {
+  var xhr = new goog.net.XhrIo();
+  xhr.send(this.baseUrl + 'api/sort-tasks.json', 'POST',
+           "order="+order.join(','));
+};

@@ -45,17 +45,24 @@ got.app.PC.prototype.loadAllTasks = function(element) {
           return goog.dom.getElementByClass('got-taskitem-body', item);
         }
       );
+      goog.events.listen(dlg, goog.fx.DragListGroup.EventType.DRAGEND,
+                         function(e) {
+                           var checkboxes = goog.dom.getElementsByClass('got-taskitem-done', element);
+                           this.api_.sortTasks(goog.array.map(checkboxes, function(box) {
+                             return box.value;
+                           }));
+                         }, false, this);
+
       dlg.init();
 
       var checkboxes = goog.dom.getElementsByClass('got-taskitem-done', element);
       goog.array.forEach(checkboxes, function(checkEl) {
         goog.events.listen(checkEl, goog.events.EventType.CLICK,
-                           function(e){
+                           function(e) {
                              this.api_.update(
                                e.target.value, null, e.target.checked
                              );
-                           },
-                           false, this);
+                           }, false, this);
       }, this);
     }, this));
 };
