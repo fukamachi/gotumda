@@ -46,6 +46,7 @@ Example:
     "no task")
 
 (defvar task nil)
+(defvar task2 nil)
 (setf task
       (request-json "api/update.json"
                     :method :POST
@@ -61,6 +62,24 @@ Example:
        (:is-done . "false")))
     "one task")
 
+(setf task2
+      (request-json "api/update.json"
+                    :method :POST
+                    :parameters '(("body" . "Clean the kitchen"))))
+
+(is (cdr (assoc :body task2))
+    "Clean the kitchen"
+    "create another task")
+
+(is (request-json "api/all-tasks.json")
+    `(((:id . ,(cdr (assoc :id task)))
+       (:body . "Buy a milk")
+       (:is-done . "false"))
+      ((:id . ,(cdr (assoc :id task2)))
+       (:body . "Clean the kitchen")
+       (:is-done . "false")))
+    "two tasks")
+
 (is (request-json "api/update.json"
                   :method :POST
                   :parameters `(("id" . ,(cdr (assoc :id task)))
@@ -73,8 +92,11 @@ Example:
 (is (request-json "api/all-tasks.json")
     `(((:id . ,(cdr (assoc :id task)))
        (:body . "Buy eggs")
+       (:is-done . "false"))
+      ((:id . ,(cdr (assoc :id task2)))
+       (:body . "Clean the kitchen")
        (:is-done . "false")))
-    "one task")
+    "two tasks")
 
 (is (request-json "api/update.json"
                   :method :POST
@@ -83,12 +105,15 @@ Example:
     `((:id . ,(cdr (assoc :id task)))
       (:body . "Buy eggs")
       (:is-done . "true"))
-    "done the task")
+    "done a task")
 
 (is (request-json "api/all-tasks.json")
     `(((:id . ,(cdr (assoc :id task)))
        (:body . "Buy eggs")
-       (:is-done . "true")))
+       (:is-done . "true"))
+      ((:id . ,(cdr (assoc :id task2)))
+       (:body . "Clean the kitchen")
+       (:is-done . "false")))
     "one done task")
 
 (ok (request-json "api/destroy.json"
@@ -97,8 +122,10 @@ Example:
     "delete the task")
 
 (is (request-json "api/all-tasks.json")
-    '()
-    "no task")
+    `(((:id . ,(cdr (assoc :id task2)))
+       (:body . "Clean the kitchen")
+       (:is-done . "false")))
+    "one task")
 
 (diag "Stopping..")
 
