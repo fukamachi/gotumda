@@ -10,6 +10,7 @@ goog.provide('got.app.PC');
 
 goog.require('got.Api');
 goog.require('goog.dom');
+goog.require('goog.style');
 goog.require('goog.events');
 goog.require('goog.array');
 goog.require('goog.fx.DragListGroup');
@@ -48,6 +49,7 @@ got.app.PC.prototype.load = function() {
 
       this.listenDragEvents_(curTaskListEl);
       this.listenCheckEvents_(allTaskListEl);
+      this.listenMouseEvents_(curTaskListEl);
     }, this));
 };
 
@@ -133,4 +135,37 @@ got.app.PC.prototype.listenCheckEvents_ = function(element) {
     goog.events.listen(checkEl, goog.events.EventType.CLICK,
                        this.onCheck_ , false, this);
   }, this);
+};
+
+/**
+ * Event handler fired when the mouse is over tasks.
+ * @param {goog.events.BrowserEvent} e
+ * @protected
+ */
+got.app.PC.prototype.onMouseOver_ = function(e) {
+  var actionEl = goog.dom.getElementByClass('got-taskitem-action', e.target);
+  goog.style.showElement(actionEl, true);
+};
+
+/**
+ * Event handler fired when the mouse goes out of tasks.
+ * @param {goog.events.BrowserEvent} e
+ * @protected
+ */
+got.app.PC.prototype.onMouseOut_ = function(e) {
+  var actionEl = goog.dom.getElementByClass('got-taskitem-action', e.target);
+  goog.style.showElement(actionEl, false);
+};
+
+/**
+ * Listen mouse events of tasks.
+ * @param {Element|String} element
+ * @protected
+ */
+got.app.PC.prototype.listenMouseEvents_ = function(element) {
+  element = goog.dom.getElement(element);
+  goog.events.listen(element, goog.events.EventType.MOUSEOVER,
+                     this.onMouseOver_, false, this);
+  goog.events.listen(element, goog.events.EventType.MOUSEOUT,
+                     this.onMouseOut_, false, this);
 };

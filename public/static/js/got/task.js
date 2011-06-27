@@ -58,5 +58,15 @@ got.Task.prototype.render = function(element) {
   var taskBodyEl = goog.dom.createDom('span', 'got-taskitem-body');
   taskBodyEl.innerHTML = this.body;
   taskEl.appendChild(taskBodyEl);
+  var editEl = goog.dom.createDom('a');
+  editEl.innerHTML = 'Edit';
+  var deleteEl = goog.dom.createDom('a');
+  deleteEl.innerHTML = 'Delete';
+  var taskActionEl = goog.dom.createDom(
+    'div', 'got-taskitem-action',
+    editEl, deleteEl
+  );
+  taskEl.appendChild(taskActionEl);
+
   this.element_.appendChild(taskEl);
 };
