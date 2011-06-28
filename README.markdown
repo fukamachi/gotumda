@@ -17,6 +17,10 @@ Gotumda is written in Common Lisp.
 
 I'm afraid, but, I bet you cannot run Gotumda on your machine. Gotumda only works on the latest version of [Caveman](https://github.com/fukamachi/caveman). If you really would like to run this app, you should checkout this and Caveman first.
 
+## Screenshot
+
+<img src="https://github.com/fukamachi/gotumda/raw/master/screenshot.png" alt="Screenshot" title="Screenshot" />
+
 ## Dependency
 
 * Clozure CL (or other CL implementation)
