@@ -143,9 +143,13 @@ got.app.PC.prototype.onCheck_ = function(e) {
   var taskEl = goog.dom.getAncestorByClass(checkEl, 'got-taskitem');
   goog.dom.removeNode(taskEl);
   if (checkEl.checked) {
+    goog.events.unlisten(taskEl, goog.events.EventType.MOUSEOVER,
+                         this.dlg_.handleDragItemMouseover_, false, this.dlg_);
     var doneTaskListEl = document.getElementById('got-done-tasks');
     doneTaskListEl.appendChild(taskEl);
   } else {
+    goog.events.listen(taskEl, goog.events.EventType.MOUSEOVER,
+                       this.dlg_.handleDragItemMouseover_, false, this.dlg_);
     var curTaskListEl = document.getElementById('got-current-tasks');
     curTaskListEl.appendChild(taskEl);
   }
