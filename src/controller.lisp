@@ -51,9 +51,11 @@
         (setf (done-p task) nil))
        ((string= "true" (getf params :|isDone|))
         (setf (done-p task) t)))
-     (awhen (getf params :|body|)
+     (awhen (or (getf params :|body|)
+                (getf params :|xdp%3Abody|))
        (setf (task-body task) it))
-     (awhen (getf params :|url|)
+     (awhen (or (getf params :|url|)
+                (getf params :|xdp%3Aurl|))
        (setf (task-url task) it))
      (princ-to-string task))))
 

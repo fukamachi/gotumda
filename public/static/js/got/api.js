@@ -10,16 +10,20 @@ goog.provide('got.Api');
 
 goog.require('goog.array');
 goog.require('goog.net.XhrIo');
+goog.require('goog.net.CrossDomainRpc');
 goog.require('goog.net.EventType');
 goog.require('goog.events');
 goog.require('goog.uri.utils');
 
 /**
- * @param {String} baseUrl
+ * @param {String} baseUri
  * @constructor
  */
-got.Api = function(baseUrl) {
-  this.baseUrl = baseUrl;
+got.Api = function(baseUri) {
+  /**
+   * @type {String}
+   */
+  this.baseUri = baseUri;
 };
 
 /**
@@ -27,47 +31,53 @@ got.Api = function(baseUrl) {
  * @param {Function(Array.<Object>)} callback
  */
 got.Api.prototype.allTasks = function(callback) {
-  var xhr = new goog.net.XhrIo();
-  goog.events.listen(
-    xhr, goog.net.EventType.COMPLETE,
-    function(e) {
-      var res = e.target.getResponseJson();
-      callback(res);
-    });
-  xhr.send(
-    this.baseUrl + 'api/all-tasks.json', 'GET'
-  );
+  this.sendRequest('api/all-tasks.json', 'GET', null, callback);
 };
 
 got.Api.prototype.update = function(id, opt_body, opt_url, opt_isDone) {
-  var query = {'id': id};
-  if (!(opt_body === null || opt_body === false)) {
-    query['body'] = opt_body;
-  }
-  if (!(opt_url === null || opt_url === false)) {
-    query['url'] = opt_url;
-  }
-  if (arguments.length > 3) {
-    query['isDone'] = opt_isDone;
-  }
-  var xhr = new goog.net.XhrIo();
-  xhr.send(this.baseUrl + 'api/update.json', 'POST',
-           goog.uri.utils.buildQueryDataFromMap(query));
+  this.sendRequest('api/update.json', 'POST',
+                   {'id': id,
+                    'body': opt_body,
+                    'url': opt_url,
+                    'isDone': opt_isDone});
 };
 
 /**
  * @param {Integer} id
  */
 got.Api.prototype.destroy = function(id) {
-  var xhr = new goog.net.XhrIo();
-  xhr.send(this.baseUrl + 'api/destroy.json', 'POST', 'id='+id);
+  this.sendRequest('api/destroy.json', 'POST', {'id': id});
 };
 
 /**
  * @param {Array.<Integer>} order
  */
 got.Api.prototype.sortTasks = function(order) {
-  var xhr = new goog.net.XhrIo();
-  xhr.send(this.baseUrl + 'api/sort-tasks.json', 'POST',
-           "order="+order.join(','));
+  this.sendRequest('api/sort-tasks.json', 'POST', {'order': order.json(',')});
+};
+
+/**
+ * @param {String} uri
+ * @param {String} method
+ * @param {Object=} opt_params
+ * @param {Function=} opt_callback
+ * @param {Boolean} opt_isCrossDomain
+ */
+got.Api.prototype.sendRequest = function(uri, method, opt_params, opt_callback, opt_isCrossDomain) {
+  opt_params = opt_params || {};
+  if (opt_isCrossDomain) {
+    goog.net.CrossDomainRpc.send(
+      this.baseUri + uri, false, method, opt_params);
+  } else {
+    var xhr = new goog.net.XhrIo();
+    var query = goog.uri.utils.buildQueryDataFromMap(opt_params);
+    if (goog.isFunction(opt_callback)) {
+      goog.events.listen(xhr, goog.net.EventType.COMPLETE,
+                         function(e) {
+                           var res = e.target.getResponseJson();
+                           opt_callback(res);
+                         });
+    }
+    xhr.send(this.baseUri + uri, method, query);
+  }
 };
