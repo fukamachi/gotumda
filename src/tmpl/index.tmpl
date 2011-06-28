@@ -5,9 +5,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Welcome to Gotumda!</title>
   <link rel="stylesheet" href="/public/static/css/main.css" type="text/css" media="screen, tv, print" charset="UTF-8" />
-  <script type="text/javascript" src="/public/static/js/closure-library/closure/goog/base.js"></script>
-  <script type="text/javascript" src="/public/static/js/deps.js"></script>
-  <script type="text/javascript" src="/public/static/js/require.js"></script>
 </head>
 <body>
 <div id="container">
@@ -28,7 +25,10 @@
 
 </div>
 
+<script type="text/javascript" src="/public/static/js/closure-library/closure/goog/base.js"></script>
+<script type="text/javascript" src="/public/static/js/deps.js"></script>
 <script type="text/javascript">
+  goog.require('got.app.PC');
   new got.app.PC('<% (format t
                              "http://~A:~A/"
                              (caveman:config :domain)
