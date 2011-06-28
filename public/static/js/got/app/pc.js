@@ -146,7 +146,7 @@ got.app.PC.prototype.onCheck_ = function(e) {
     goog.events.unlisten(taskEl, goog.events.EventType.MOUSEOVER,
                          this.dlg_.handleDragItemMouseover_, false, this.dlg_);
     var doneTaskListEl = document.getElementById('got-done-tasks');
-    doneTaskListEl.appendChild(taskEl);
+    goog.dom.insertChildAt(doneTaskListEl, taskEl, 0);
   } else {
     goog.events.listen(taskEl, goog.events.EventType.MOUSEOVER,
                        this.dlg_.handleDragItemMouseover_, false, this.dlg_);
