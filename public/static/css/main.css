@@ -53,6 +53,33 @@ a:hover {
   color: white;
 }
 
+#bookmarklet {
+  color: #e3e3e3;
+  font-size: small;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+#bookmarklet * {
+  display: block;
+  float: left;
+}
+
+#bookmarklet a {
+  padding: 3px 5px 0 20px;
+  font-size: small;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: move;
+  color: black;
+  background: white url('/public/static/img/cross.png') no-repeat 2px 5px;
+}
+
+#bookmarklet p {
+  margin: 3px 4px 0 0;
+}
+
 #got-all-tasks {
 }
 

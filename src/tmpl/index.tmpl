@@ -1,3 +1,9 @@
+<% (defvar *location*
+           (format nil
+                   "http://~A~:[:~A~;~]/"
+                   (caveman:config :domain)
+                   (= (caveman:config :port) 80)
+                   (caveman:config :port))) %>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
@@ -11,6 +17,10 @@
 
 <div id="header">
   <h1><a href="/">Gotumda</a></h1>
+  <div id="bookmarklet">
+    <p>Drag this into your toolbar -&gt;</p>
+    <a href="javascript:(function(){var%20s=document.createElement('script');s.type='text/javascript';s.src='<%= *location* %>public/static/js/compiled.js';document.body.appendChild(s);setTimeout(function(){var%20api=new%20got.Api('<%= *location* %>');api.update(null,document.title,location.href)},500)})()" alt="Do It Later">Do It Later</a>
+  </div>
 </div>
 
 <div id="content">
@@ -36,10 +46,7 @@
   goog.require('got.app.PC');
 </script>
 <script type="text/javascript">
-  new got.app.PC('<% (format t
-                             "http://~A:~A/"
-                             (caveman:config :domain)
-                             (caveman:config :port)) %>');
+  new got.app.PC('<%= *location* %>');
 </script>
 </body>
 </html>
