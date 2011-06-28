@@ -87,6 +87,14 @@ a:hover {
   padding-top: 3px;
 }
 
+.got-taskitem-body {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 500px;
+  float: left;
+}
+
 #got-current-tasks .got-taskitem-done {
   margin: 10px 5px 0 5px;
 }
