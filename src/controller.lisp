@@ -9,6 +9,7 @@
   (:import-from :gotumda.model
                 :<task>
                 :task-body
+                :task-url
                 :done-p
                 :get-task-by-id
                 :get-all-tasks
@@ -50,8 +51,10 @@
         (setf (done-p task) nil))
        ((string= "true" (getf params :|isDone|))
         (setf (done-p task) t)))
-     (when (getf params :|body|)
-       (setf (task-body task) (getf params :|body|)))
+     (awhen (getf params :|body|)
+       (setf (task-body task) it))
+     (awhen (getf params :|url|)
+       (setf (task-url task) it))
      (princ-to-string task))))
 
 @url POST "/api/destroy.json"

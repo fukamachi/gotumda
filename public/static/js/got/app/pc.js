@@ -120,7 +120,7 @@ got.app.PC.prototype.onCheck_ = function(e) {
     curTaskListEl.appendChild(taskEl);
   }
   this.api_.update(
-    checkEl.value, null, checkEl.checked
+    checkEl.value, null, null, checkEl.checked
   );
   goog.style.showElement(goog.dom.getElementByClass('got-taskitem-action', taskEl), false);
 };

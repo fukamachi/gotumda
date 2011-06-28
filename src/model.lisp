@@ -1,6 +1,7 @@
 (clack.util:namespace gotumda.model
   (:use :cl
-        :caveman)
+        :caveman
+        :anaphora)
   (:import-from :elephant
                 :persistent-metaclass
                 :*store-controller*
@@ -50,9 +51,9 @@ If it doesn't exist, creates new one and add it."
      ((body :type string
             :initarg body
             :accessor task-body)
-      (url :type (or null string)
+      (url :type string
            :initarg url
-           :initform nil
+           :initform ""
            :accessor task-url)
       (deleted-p :type boolean
                  :initform nil
@@ -74,9 +75,12 @@ If it doesn't exist, creates new one and add it."
                            (headers *response* :content-type))))
     (if (string= content-type "application/json")
         (format stream
-                "{\"id\":\"~A\",\"body\":\"~A\",\"isDone\":\"~A\"}"
+                "{\"id\":\"~A\",\"body\":\"~A\",\"url\":\"~A\",\"isDone\":\"~A\"}"
                 (object-id this)
                 (task-body this)
+                (aif (task-url this)
+                     it
+                     "")
                 (if (done-p this)
                     "true"
                     "false"))

@@ -39,12 +39,15 @@ got.Api.prototype.allTasks = function(callback) {
   );
 };
 
-got.Api.prototype.update = function(id, opt_body, opt_isDone) {
+got.Api.prototype.update = function(id, opt_body, opt_url, opt_isDone) {
   var query = {'id': id};
   if (!(opt_body === null || opt_body === false)) {
     query['body'] = opt_body;
   }
-  if (arguments.length > 2) {
+  if (!(opt_url === null || opt_url === false)) {
+    query['url'] = opt_url;
+  }
+  if (arguments.length > 3) {
     query['isDone'] = opt_isDone;
   }
   var xhr = new goog.net.XhrIo();
