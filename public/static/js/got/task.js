@@ -55,7 +55,7 @@ got.Task.prototype.render = function(element) {
     doneCheckEl.checked = true;
   }
   taskEl.appendChild(doneCheckEl);
-  var taskBodyEl = goog.dom.createDom('span', 'got-taskitem-body');
+  var taskBodyEl = goog.dom.createDom('div', 'got-taskitem-body');
   taskBodyEl.innerHTML = this.body;
   taskEl.appendChild(taskBodyEl);
   var editEl = goog.dom.createDom('a');
@@ -63,7 +63,8 @@ got.Task.prototype.render = function(element) {
   var deleteEl = goog.dom.createDom('a');
   deleteEl.innerHTML = 'Delete';
   var taskActionEl = goog.dom.createDom(
-    'div', 'got-taskitem-action',
+    'div', {'class': 'got-taskitem-action',
+            'style': 'display: none;'},
     editEl, deleteEl
   );
   taskEl.appendChild(taskActionEl);

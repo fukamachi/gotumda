@@ -9,6 +9,7 @@
 goog.provide('got.app.PC');
 
 goog.require('got.Api');
+goog.require('got.Task');
 goog.require('goog.dom');
 goog.require('goog.style');
 goog.require('goog.events');
@@ -45,7 +46,7 @@ got.app.PC.prototype.load = function() {
         task.render(
           task.isDone ? doneTaskListEl : curTaskListEl
         );
-      }, this);
+      });
 
       this.listenDragEvents_(curTaskListEl);
       this.listenCheckEvents_(allTaskListEl);
@@ -71,7 +72,7 @@ got.app.PC.prototype.onDragEnd_ = function(e) {
  * @return {Element}
  * @protected
  */
-got.app.PC.prototype.getHandlerForDragItem_ = function(item) {
+got.app.PC.prototype.handlerForDragItem_ = function(item) {
   return goog.dom.getElementByClass('got-taskitem-body', item);
 };
 
@@ -86,9 +87,9 @@ got.app.PC.prototype.listenDragEvents_ = function(element) {
   dlg.addDragList(element,
                   goog.fx.DragListDirection.DOWN);
   dlg.setDragItemHoverClass('cursor-move');
-  dlg.setDraggerElClass('cursor-move');
+  dlg.setDraggerElClass('cursor-move dragging');
   dlg.setFunctionToGetHandleForDragItem(
-    this.getHandlerForDragItem_
+    this.handlerForDragItem_
   );
   goog.events.listen(dlg, goog.fx.DragListGroup.EventType.DRAGEND,
                      this.onDragEnd_ , false, this);
@@ -118,9 +119,10 @@ got.app.PC.prototype.onCheck_ = function(e) {
     var curTaskListEl = document.getElementById('got-current-tasks');
     curTaskListEl.appendChild(taskEl);
   }
-  this.api_update(
+  this.api_.update(
     checkEl.value, null, checkEl.checked
   );
+  goog.style.showElement(goog.dom.getElementByClass('got-taskitem-action', taskEl), false);
 };
 
 /**
@@ -143,8 +145,11 @@ got.app.PC.prototype.listenCheckEvents_ = function(element) {
  * @protected
  */
 got.app.PC.prototype.onMouseOver_ = function(e) {
-  var actionEl = goog.dom.getElementByClass('got-taskitem-action', e.target);
-  goog.style.showElement(actionEl, true);
+  var taskEl = goog.dom.getAncestorByClass(e.target, 'got-taskitem');
+  var actionEl = goog.dom.getElementByClass('got-taskitem-action', taskEl);
+  if (actionEl) {
+    goog.style.showElement(actionEl, true);
+  }
 };
 
 /**
@@ -153,8 +158,11 @@ got.app.PC.prototype.onMouseOver_ = function(e) {
  * @protected
  */
 got.app.PC.prototype.onMouseOut_ = function(e) {
-  var actionEl = goog.dom.getElementByClass('got-taskitem-action', e.target);
-  goog.style.showElement(actionEl, false);
+  var taskEl = goog.dom.getAncestorByClass(e.target, 'got-taskitem');
+  var actionEl = goog.dom.getElementByClass('got-taskitem-action', taskEl);
+  if (actionEl) {
+    goog.style.showElement(actionEl, false);
+  }
 };
 
 /**
