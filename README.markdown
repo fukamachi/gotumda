@@ -23,10 +23,10 @@ I'm afraid, but, I bet you cannot run Gotumda on your machine. Gotumda only work
 
 ## RESTful API
 
-* `/api/all-tasks.json` []: Takes o parameter and returns all tasks as a JSON string. Only `GET` is allowed.
-* `/api/update.json` [id, body, url, isDone]: Takes 4 parameters, slots of `<task>`. If `id` is unspecified, it means "create" a new task. Only `POST` is allowed.
-* `/api/destroy.json` [id]: Takes one parameter and delete the task. Only `POST` is allowed.
-* `/api/sort-tasks.json` [order]: Takes one parameter as a comma separated ids. Only `POST` is allowed.
+* `/api/all-tasks.json`: Takes no parameter and returns all tasks as a JSON string. Only `GET` is allowed.
+* `/api/update.json`: Takes 4 parameters, `id`, `body`, `url` and `isDone`. If `id` is unspecified, it means "create" a new task. Only `POST` is allowed.
+* `/api/destroy.json`: Takes one parameter `id` and delete the task. Only `POST` is allowed.
+* `/api/sort-tasks.json`: Takes one parameter `order` as a comma separated ids. Only `POST` is allowed.
 
 ## Dependency
 
