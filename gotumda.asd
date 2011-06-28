@@ -9,7 +9,7 @@
 
 (defsystem gotumda
   :author "Eitarow Fukamachi"
-  :license "Apache"
+  :license "Apache License 2.0"
   :version "0.1-SNAPSHOT"
   :depends-on (:caveman
                :cl-annot
