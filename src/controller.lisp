@@ -36,7 +36,7 @@
 (defun index (params)
   "Show index page."
   (render
-   "index.tmpl"
+   "index.html"
    params))
 
 @url POST "/api/update.json"
@@ -77,6 +77,7 @@
 
 @url POST "/api/sort-tasks.json"
 (defun sort-tasks (params)
+  "Sort tasks through API."
   (setf (task-order)
         (mapcar #'parse-integer
                 (split-sequence #\, (getf params :|order|))))

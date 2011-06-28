@@ -24,6 +24,7 @@
 (cl-annot:enable-annot-syntax)
 
 (defun make-task-order (&optional initial-contents)
+  "Create a new array for task list."
   (make-array (length initial-contents)
               :element-type 'integer
               :fill-pointer t
@@ -88,15 +89,19 @@ If it doesn't exist, creates new one and add it."
 
 @export
 (defun get-task-by-id (id)
+  "Find a task and return it by the object id."
   (let ((task (get-instance-by-id '<task> id)))
     (unless (deleted-p task)
       task)))
 
 (defmethod drop-instance :after ((this <task>))
+  "For `elephant:drop-instance'. Set `deleted-p' T when it is dropped."
   (setf (deleted-p this) t))
 
 @export
 (defun get-all-tasks ()
+  "This is similar to `elephant:get-instances-by-class',
+but this returns sorted task list."
   (sort
    (remove-if #'deleted-p
               (get-instances-by-class '<task>))

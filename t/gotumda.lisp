@@ -35,7 +35,7 @@ Example:
 (gotumda:stop)
 
 (diag "Starting..")
-(gotumda:start :mode "test")
+(gotumda:start :mode :test)
 
 ;; cleanup database
 (drop-instances
