@@ -25,8 +25,13 @@
 
 </div>
 
+<% (when (eq (caveman:current-mode) :prod) %>
+<script type="text/javascript" src="/public/static/js/compiled.js"></script>
+<% ) %>
+<% (unless (eq (caveman:current-mode) :prod) %>
 <script type="text/javascript" src="/public/static/js/closure-library/closure/goog/base.js"></script>
 <script type="text/javascript" src="/public/static/js/deps.js"></script>
+<% ) %>
 <script type="text/javascript">
   goog.require('got.app.PC');
 </script>

@@ -5,7 +5,8 @@
         :clack.middleware.clsql)
   (:shadow :stop)
   (:import-from :caveman.app
-                :<app>)
+                :<app>
+                :app-mode)
   (:import-from :elephant
                 :open-store
                 :close-store)
@@ -47,11 +48,12 @@
      (format nil
       "python ~A~:*closure-library/closure/bin/build/depswriter.py --root_with_prefix=\"~A~:*got ../../../got\" --output_file=~Adeps.js"
       js-dir))
-    (trivial-shell:shell-command
-     (format nil
-      "python ~A~:*closure-library/closure/bin/build/closurebuilder.py --root=~A~:*closure-library --root=~A~:*got -n got.app.PC -o compiled --output_file=~Acompiled.js -c ~A -f \"--define=goog.DEBUG=false\""
-      js-dir
-      compiler-path))))
+    (when (eq (app-mode *app*) :prod)
+      (trivial-shell:shell-command
+       (format nil
+        "python ~A~:*closure-library/closure/bin/build/closurebuilder.py --root=~A~:*closure-library --root=~A~:*got -n got.app.PC -o compiled --output_file=~Acompiled.js -c ~A -f \"--define=goog.DEBUG=false\""
+        js-dir
+        compiler-path)))))
 
 @export
 (defun start (&key (mode :dev) (debug t) lazy)
