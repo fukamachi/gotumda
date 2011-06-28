@@ -39,11 +39,19 @@
                   #'merge-pathnames
                   (list #p"static/js/"
                         (getf config :static-path)
-                        (getf config :application-root)))))
+                        (getf config :application-root))))
+         (compiler-path (merge-pathnames
+                         #p"tool/compiler.jar"
+                         (getf config :application-root))))
     (trivial-shell:shell-command
      (format nil
       "python ~A~:*closure-library/closure/bin/build/depswriter.py --root_with_prefix=\"~A~:*got ../../../got\" --output_file=~Adeps.js"
-      js-dir))))
+      js-dir))
+    (trivial-shell:shell-command
+     (format nil
+      "python ~A~:*closure-library/closure/bin/build/closurebuilder.py --root=~A~:*closure-library --root=~A~:*got -n got.app.PC -o compiled --output_file=~Acompiled.js -c ~A -f \"--define=goog.DEBUG=false\""
+      js-dir
+      compiler-path))))
 
 @export
 (defun start (&key (mode :dev) (debug t) lazy)
