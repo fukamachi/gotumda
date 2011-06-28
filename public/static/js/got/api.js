@@ -56,6 +56,14 @@ got.Api.prototype.update = function(id, opt_body, opt_url, opt_isDone) {
 };
 
 /**
+ * @param {Integer} id
+ */
+got.Api.prototype.destroy = function(id) {
+  var xhr = new goog.net.XhrIo();
+  xhr.send(this.baseUrl + 'api/destroy.json', 'POST', 'id='+id);
+};
+
+/**
  * @param {Array.<Integer>} order
  */
 got.Api.prototype.sortTasks = function(order) {

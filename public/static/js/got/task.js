@@ -70,10 +70,8 @@ got.Task.prototype.render = function(element) {
     );
   }
   taskEl.appendChild(taskBodyEl);
-  var editEl = goog.dom.createDom('a');
-  editEl.innerHTML = 'Edit';
-  var deleteEl = goog.dom.createDom('a');
-  deleteEl.innerHTML = 'Delete';
+  var editEl = goog.dom.createDom('a', null, 'Edit');
+  var deleteEl = goog.dom.createDom('a', null, 'Delete');
   var taskActionEl = goog.dom.createDom(
     'div', {'class': 'got-taskitem-action',
             'style': 'display: none;'},
