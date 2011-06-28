@@ -16,6 +16,7 @@ goog.require('goog.events');
 goog.require('goog.uri.utils');
 
 /**
+ * Class to request to backend by RESTful API.
  * @param {String} baseUri
  * @constructor
  */
@@ -34,6 +35,13 @@ got.Api.prototype.allTasks = function(callback) {
   this.sendRequest('api/all-tasks.json', 'GET', null, callback);
 };
 
+/**
+ * Request to 'api/update.json'.
+ * @param {(String|Number)=} id
+ * @param {String=} opt_body
+ * @param {String=} opt_url
+ * @param {Boolean=} opt_isDone
+ */
 got.Api.prototype.update = function(id, opt_body, opt_url, opt_isDone) {
   this.sendRequest('api/update.json', 'POST',
                    {'id': id,
@@ -43,6 +51,7 @@ got.Api.prototype.update = function(id, opt_body, opt_url, opt_isDone) {
 };
 
 /**
+ * Request to 'api/destroy.json'.
  * @param {Integer} id
  */
 got.Api.prototype.destroy = function(id) {
@@ -50,6 +59,7 @@ got.Api.prototype.destroy = function(id) {
 };
 
 /**
+ * Request to 'api/sort-tasks.json'.
  * @param {Array.<Integer>} order
  */
 got.Api.prototype.sortTasks = function(order) {
@@ -57,13 +67,15 @@ got.Api.prototype.sortTasks = function(order) {
 };
 
 /**
+ * General function to throw a HTTP request through RESTful API.
  * @param {String} uri
  * @param {String} method
  * @param {Object=} opt_params
  * @param {Function=} opt_callback
  * @param {Boolean} opt_isCrossDomain
  */
-got.Api.prototype.sendRequest = function(uri, method, opt_params, opt_callback, opt_isCrossDomain) {
+got.Api.prototype.sendRequest = function(uri, method, opt_params,
+                                  opt_callback, opt_isCrossDomain) {
   opt_params = opt_params || {};
   if (opt_isCrossDomain) {
     goog.net.CrossDomainRpc.send(

@@ -1,7 +1,7 @@
 // Copyright 2011 Eitarow Fukamachi. All rights reserved.
 
 /**
- * @fileoverview Task.
+ * @fileoverview Class for Task.
  *
  * @author e.arrows@gmail.com (Eitarow Fukamachi)
  */
@@ -39,7 +39,8 @@ got.Task = function(params) {
 };
 
 /**
- * @param {Element=} element Where to render.
+ * Render this task into the specified element.
+ * @param {Element|String} element Where to render.
  */
 got.Task.prototype.render = function(element) {
   /**

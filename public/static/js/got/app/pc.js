@@ -18,19 +18,21 @@ goog.require('goog.fx.DragListGroup');
 goog.require('goog.fx.DragListDirection');
 
 /**
- * @param {String} baseUrl
+ * Class for PC frontend.
+ * @param {String} baseUri
  * @constructor
  */
-got.app.PC = function(baseUrl) {
+got.app.PC = function(baseUri) {
   /**
    * @type {got.App}
    * @protected
    */
-  this.api_ = new got.Api(baseUrl);
+  this.api_ = new got.Api(baseUri);
 
   /**
    * Is the cursor on a link.
    * @type {Boolean}
+   * @protected
    */
   this.isOnLink_ = false;
 
@@ -78,7 +80,8 @@ got.app.PC.prototype.load = function() {
  * @protected
  */
 got.app.PC.prototype.onDragEnd_ = function(e) {
-  var checkboxes = goog.dom.getElementsByClass('got-taskitem-done', this.taskListEl_);
+  var checkboxes
+      = goog.dom.getElementsByClass('got-taskitem-done', this.taskListEl_);
   this.api_.sortTasks(goog.array.map(checkboxes, function(box) {
     return box.value;
   }));
@@ -90,7 +93,7 @@ got.app.PC.prototype.onDragEnd_ = function(e) {
  * @return {Element}
  * @protected
  */
-got.app.PC.prototype.handlerForDragItem_ = function(item) {
+got.app.PC.prototype.getHandlerForDragItem_ = function(item) {
   return goog.dom.getElementByClass('got-taskitem-body', item);
 };
 
@@ -113,14 +116,14 @@ got.app.PC.prototype.listenDragEvents_ = function(element) {
   dlg.setDragItemHoverClass('cursor-move');
   dlg.setDraggerElClass('cursor-move dragging');
   dlg.setFunctionToGetHandleForDragItem(
-    this.handlerForDragItem_
+    this.getHandlerForDragItem_
   );
   goog.events.listen(dlg, goog.fx.DragListGroup.EventType.DRAGEND,
                      this.onDragEnd_ , false, this);
 
   // don't drag if the cursor is on a link.
   goog.events.listen(
-    this.dlg_, goog.fx.DragListGroup.EventType.BEFOREDRAGSTART,
+    dlg, goog.fx.DragListGroup.EventType.BEFOREDRAGSTART,
     function(e) {
       if (this.isOnLink_) {
         e.preventDefault();
@@ -149,7 +152,8 @@ got.app.PC.prototype.onCheck_ = function(e) {
   this.api_.update(
     checkEl.value, null, null, checkEl.checked
   );
-  goog.style.showElement(goog.dom.getElementByClass('got-taskitem-action', taskEl), false);
+  goog.style.showElement(
+    goog.dom.getElementByClass('got-taskitem-action', taskEl), false);
 };
 
 /**
@@ -220,7 +224,7 @@ got.app.PC.prototype.listenTaskAction_ = function(element) {
     goog.events.listen(
       actionEl.childNodes[0], goog.events.EventType.CLICK,
       function(e) {
-        // TODO
+        // TODO: implement Edit action.
       }, false, this);
     goog.events.listen(
       actionEl.childNodes[1], goog.events.EventType.CLICK,

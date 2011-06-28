@@ -36,6 +36,10 @@ a:hover {
   text-align: left;
 }
 
+/**
+ * Header
+ **/
+
 #header {
   background-color: black;
   position: relative;
@@ -80,8 +84,9 @@ a:hover {
   margin: 3px 4px 0 0;
 }
 
-#got-all-tasks {
-}
+/**
+ * Content
+ **/
 
 #got-current-tasks {
   border-top: 1px solid #ccc;
@@ -93,6 +98,7 @@ a:hover {
   padding: 5px 15px;
 }
 
+/* Task Item Row */
 .got-taskitem {
   position: relative;
   background-color: white;
