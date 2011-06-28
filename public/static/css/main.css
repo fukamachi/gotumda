@@ -85,13 +85,15 @@ a:hover {
 
 .got-taskitem-body {
   padding-top: 3px;
+  width: 600px;
+  height: 100%;
 }
 
-.got-taskitem-body {
+.got-taskitem-body div {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 500px;
+  width: 500px;
   float: left;
 }
 
@@ -109,6 +111,7 @@ a:hover {
   position: absolute;
   top: 4px;
   right: 8px;
+  height: 0;
 }
 
 .got-taskitem-action a {

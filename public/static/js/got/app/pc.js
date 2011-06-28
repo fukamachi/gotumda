@@ -28,6 +28,12 @@ got.app.PC = function(baseUrl) {
    */
   this.api_ = new got.Api(baseUrl);
 
+  /**
+   * Is the cursor on a link.
+   * @type {Boolean}
+   */
+  this.isOnLink_ = false;
+
   this.load();
 };
 
@@ -48,6 +54,17 @@ got.app.PC.prototype.load = function() {
         );
       });
 
+      goog.array.forEach(curTaskListEl.childNodes, function(node) {
+        node = goog.dom.getElementsByTagNameAndClass('a', null, node);
+        goog.events.listen(node[0], goog.events.EventType.MOUSEOVER,
+                           function(e) {
+                             this.isOnLink_ = true;
+                           }, false, this);
+        goog.events.listen(node[0], goog.events.EventType.MOUSEOUT,
+                           function(e) {
+                             this.isOnLink_ = false;
+                           }, false, this);
+      }, this);
       this.listenDragEvents_(curTaskListEl);
       this.listenCheckEvents_(allTaskListEl);
       this.listenMouseEvents_(curTaskListEl);
@@ -83,7 +100,13 @@ got.app.PC.prototype.handlerForDragItem_ = function(item) {
  */
 got.app.PC.prototype.listenDragEvents_ = function(element) {
   element = goog.dom.getElement(element);
-  var dlg = new goog.fx.DragListGroup();
+
+  /**
+   * @type {goog.fx.DragListGroup}
+   * @protected
+   */
+  var dlg = this.dlg_ = new goog.fx.DragListGroup();
+
   dlg.addDragList(element,
                   goog.fx.DragListDirection.DOWN);
   dlg.setDragItemHoverClass('cursor-move');
@@ -94,13 +117,16 @@ got.app.PC.prototype.listenDragEvents_ = function(element) {
   goog.events.listen(dlg, goog.fx.DragListGroup.EventType.DRAGEND,
                      this.onDragEnd_ , false, this);
 
-  dlg.init();
+  // don't drag if the cursor is on a link.
+  goog.events.listen(
+    this.dlg_, goog.fx.DragListGroup.EventType.BEFOREDRAGSTART,
+    function(e) {
+      if (this.isOnLink_) {
+        e.preventDefault();
+      }
+    }, false, this);
 
-  /**
-   * @type {goog.fx.DragListGroup}
-   * @protected
-   */
-  this.dlg_ = dlg;
+  dlg.init();
 };
 
 /**

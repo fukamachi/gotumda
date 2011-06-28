@@ -62,10 +62,11 @@ got.Task.prototype.render = function(element) {
   taskEl.appendChild(doneCheckEl);
   var taskBodyEl = goog.dom.createDom('div', 'got-taskitem-body');
   if (this.url === "") {
-    taskBodyEl.innerHTML = this.body;
+    taskBodyEl.innerHTML = '<div>' + this.body + '</div>';
   } else {
     taskBodyEl.appendChild(
-      goog.dom.createDom('a', {'href': this.url}, this.body)
+      goog.dom.createDom('div', null,
+                         goog.dom.createDom('a', {'href': this.url}, this.body))
     );
   }
   taskEl.appendChild(taskBodyEl);
