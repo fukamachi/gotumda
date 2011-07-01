@@ -10,3 +10,4 @@ log
 deps.js
 *.pyc
 compiled.js
+config/dev.lisp

@@ -16,14 +16,20 @@
                :elephant
                :anaphora
                :trivial-shell
-               :split-sequence)
+               :split-sequence
+               :ironclad
+               :drakma
+               :cl-json)
   :components ((:module "lib"
                 :components
-                ((:file "gotumda")
+                ((:file "gotumda" :depends-on ("middleware"))
                  (:module "view"
                   :depends-on ("gotumda")
                   :components
-                  ((:file "emb")))))
+                  ((:file "emb")))
+                 (:module "middleware"
+                  :components
+                  ((:file "authhatena")))))
                (:module "src"
                 :depends-on ("lib")
                 :components

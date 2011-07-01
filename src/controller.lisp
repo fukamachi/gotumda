@@ -37,7 +37,8 @@
   "Show index page."
   (render
    "index.html"
-   params))
+   `(:user ,(gethash :hatena.user *session*)
+     ,@params)))
 
 @url POST "/api/update.json"
 (defun update (params)

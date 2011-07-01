@@ -45,11 +45,13 @@ a:hover {
   position: relative;
   padding: 1px 1px;
   margin-bottom: 5px;
+  height: 40px;
 }
 
 #header h1 {
   margin: 10px 15px;
   font-size: large;
+  float: left;
 }
 
 #header h1 a {
@@ -57,31 +59,14 @@ a:hover {
   color: white;
 }
 
-#bookmarklet {
-  color: #e3e3e3;
-  font-size: small;
-  position: absolute;
-  top: 10px;
-  right: 10px;
+#login-user {
+  float: right;
+  margin: 10px 10px 0 0;
 }
 
-#bookmarklet * {
-  display: block;
-  float: left;
-}
-
-#bookmarklet a {
-  padding: 3px 5px 0 20px;
-  font-size: small;
-  border-radius: 5px;
+#login-user a {
+  color: white;
   text-decoration: none;
-  cursor: move;
-  color: black;
-  background: white url('/public/static/img/cross.png') no-repeat 2px 5px;
-}
-
-#bookmarklet p {
-  margin: 3px 4px 0 0;
 }
 
 /**
@@ -89,6 +74,7 @@ a:hover {
  **/
 
 #got-current-tasks {
+  clear: both;
   border-top: 1px solid #ccc;
 }
 

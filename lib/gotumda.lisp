@@ -2,10 +2,12 @@
   (:use :cl
         :clack
         :clack.builder
-        :clack.middleware.clsql)
+        :clack.middleware.clsql
+        :gotumda.middleware.authhatena)
   (:shadow :stop)
   (:import-from :caveman.app
                 :<app>
+                :build
                 :app-mode)
   (:import-from :elephant
                 :open-store
@@ -21,17 +23,19 @@
 @export
 (defvar *app* (make-instance 'gotumda))
 
-(defmethod build ((this gotumda) app)
-  (call-next-method
-   this
-   (builder
-    (<clack-middleware-clsql>
-     :database-type (getf (caveman.app:config this)
-                          :database-type)
-     :connection-spec (getf (caveman.app:config this)
-                            :database-connection-spec)
-     :connect-args '(:pool t :encoding :utf-8))
-    app)))
+(defmethod build ((this gotumda) &optional (app this))
+  (let ((config (caveman.app:config this)))
+    (call-next-method
+     this
+     (builder
+      (<gotumda-middleware-authhatena>
+       :consumer-key (getf config :consumer-key)
+       :consumer-secret (getf config :consumer-secret)
+       :authorize-uri (getf config :authorize-uri)
+       :cert-uri (getf config :cert-uri)
+       :callback-uri "http://localhost:8080/"
+       :auth-path "/auth")
+      app))))
 
 @export
 (defun rebuild-js ()
