@@ -6,79 +6,35 @@
  * @author e.arrows@gmail.com (Eitarow Fukamachi)
  */
 
-goog.provide('got.Task');
+goog.provide('got.task');
 
 goog.require('goog.dom');
 goog.require('goog.json');
 
 /**
- * Class for Task.
- * @param {Object} params
- * @constructor
- */
-got.Task = function(params) {
-  /**
-   * @type {Integer}
-   */
-  this.id = params['id'];
-
-  /**
-   * @type {String}
-   */
-  this.body = params['body'];
-
-  /**
-   * @type {String}
-   */
-  this.url = params['url'];
-
-  /**
-   * @type {Boolean}
-   */
-  this.isDone = goog.json.parse(params['isDone']);
-};
-
-/**
  * Render this task into the specified element.
+ * @param {Object} task
  * @param {Element|String} element Where to render.
  */
-got.Task.prototype.render = function(element) {
+got.task.render = function(task, element) {
   /**
    * @type {Element}
    * @protected
    */
-  this.element_ = goog.dom.getElement(element);
+  element = goog.dom.getElement(element);
 
   var taskEl =  goog.dom.createDom('div', 'got-taskitem');
-  var doneCheckEl = goog.dom.createDom(
-    'input',
-    {'class': 'got-taskitem-done',
-     'type': 'checkbox',
-     'name': 'id',
-     'value': this.id}
-  );
-  if (this.isDone) {
-    doneCheckEl.checked = true;
-  }
-  taskEl.appendChild(doneCheckEl);
+  taskEl.appendChild(goog.dom.createDom('img', {'src': task['user']['imageUrl']}));
   var taskBodyEl = goog.dom.createDom('div', 'got-taskitem-body');
-  if (this.url === "") {
-    taskBodyEl.innerHTML = '<div>' + this.body + '</div>';
-  } else {
-    taskBodyEl.appendChild(
-      goog.dom.createDom('div', null,
-                         goog.dom.createDom('a', {'href': this.url}, this.body))
-    );
-  }
+  taskBodyEl.innerHTML = '<div>' + task['body'] + '</div>';
   taskEl.appendChild(taskBodyEl);
-  var editEl = goog.dom.createDom('a', null, 'Edit');
-  var deleteEl = goog.dom.createDom('a', null, 'Delete');
+  var copyEl = goog.dom.createDom('a', null, 'Copy');
+  var moveEl = goog.dom.createDom('a', null, 'Move');
   var taskActionEl = goog.dom.createDom(
-    'div', {'class': 'got-taskitem-action',
-            'style': 'display: none;'},
-    editEl, deleteEl
+    'div', {'class': 'got-taskitem-action'},
+    copyEl, moveEl
   );
   taskEl.appendChild(taskActionEl);
 
-  this.element_.appendChild(taskEl);
+  element.appendChild(taskEl);
 };

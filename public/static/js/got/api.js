@@ -42,11 +42,10 @@ got.Api.prototype.allTasks = function(callback) {
  * @param {String=} opt_url
  * @param {Boolean=} opt_isDone
  */
-got.Api.prototype.update = function(id, opt_body, opt_url, opt_isDone) {
+got.Api.prototype.update = function(id, opt_body, opt_isDone) {
   this.sendRequest('api/update.json', 'POST',
                    {'id': id,
                     'body': opt_body,
-                    'url': opt_url,
                     'isDone': opt_isDone});
 };
 

@@ -9,7 +9,7 @@
 goog.provide('got.app.PC');
 
 goog.require('got.Api');
-goog.require('got.Task');
+goog.require('got.task');
 goog.require('goog.dom');
 goog.require('goog.style');
 goog.require('goog.events');
@@ -36,7 +36,7 @@ got.app.PC = function(baseUri) {
    */
   this.isOnLink_ = false;
 
-  //this.load();
+  this.load();
 };
 
 /**
@@ -45,33 +45,22 @@ got.app.PC = function(baseUri) {
 got.app.PC.prototype.load = function() {
   this.api_.allTasks(
     goog.bind(function(tasks) {
-      var allTaskListEl = document.getElementById('got-all-tasks');
-      var curTaskListEl = document.getElementById('got-current-tasks');
-      var doneTaskListEl = document.getElementById('got-done-tasks');
-      curTaskListEl.innerHTML = '';
-      goog.array.forEach(tasks, function(taskObj) {
-        var task = new got.Task(taskObj);
-        task.render(
-          task.isDone ? doneTaskListEl : curTaskListEl
-        );
+      var element = document.getElementById('got-public-tasks');
+      element.innerHTML = '';
+      goog.array.forEach(tasks, function(task) {
+        got.task.render(task, element);
       });
-
-      goog.array.forEach(curTaskListEl.childNodes, function(node) {
-        node = goog.dom.getElementsByTagNameAndClass('a', null, node);
-        goog.events.listen(node[0], goog.events.EventType.MOUSEOVER,
-                           function(e) {
-                             this.isOnLink_ = true;
-                           }, false, this);
-        goog.events.listen(node[0], goog.events.EventType.MOUSEOUT,
-                           function(e) {
-                             this.isOnLink_ = false;
-                           }, false, this);
-      }, this);
-      this.listenDragEvents_(curTaskListEl);
-      this.listenCheckEvents_(allTaskListEl);
-      this.listenMouseEvents_(curTaskListEl);
-      this.listenTaskAction_(curTaskListEl);
+      var form = document.getElementById('got-post-task');
+      goog.events.listen(form, goog.events.EventType.SUBMIT,
+                         this.onSubmit_, false, this);
     }, this));
+};
+
+got.app.PC.prototype.onSubmit_ = function(e) {
+  var form = e.target;
+  var textarea = goog.dom.getElementsByTagNameAndClass('textarea', null, form)[0];
+  this.api_.update(null, textarea.value, null);
+  textarea.value = '';
 };
 
 /**

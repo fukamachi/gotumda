@@ -83,7 +83,7 @@ a:hover {
   float: left;
   width: 400px;
   height: 100%;
-  padding: 20px 0 0 20px;
+  padding: 10px 0 0 20px;
 }
 
 #content-right {
@@ -97,7 +97,7 @@ a:hover {
 
 #got-post-task textarea {
   width: 95%;
-  height: 40px;
+  height: 30px;
 }
 
 #got-post-task input {
@@ -115,4 +115,32 @@ a:hover {
 
 #got-public-tasks {
   clear: both;
+}
+
+/**
+ * Task
+ */
+
+.got-taskitem {
+  clear: both;
+}
+
+.got-taskitem img {
+  float: left;
+}
+
+.got-taskitem-body {
+  height: 70px;
+  float: left;
+}
+
+.got-taskitem-action {
+  float: right;
+  font-size: x-small;
+  margin: 15px 10px 0 0;
+}
+
+.got-taskitem-action a {
+  padding: 3px;
+  cursor: pointer;
 }

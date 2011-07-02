@@ -20,8 +20,8 @@
                 :object-id
                 :get-instance-by-id)
   (:export :task-body
-           :deleted-p
-           :done-p))
+           :is-deleted
+           :is-done))
 
 (cl-annot:enable-annot-syntax)
 
@@ -62,13 +62,14 @@ If it doesn't exist, creates new one and add it."
              :accessor task-owner)
       (origin-id :type (or integer null)
                  :initarg :origin-id
-                 :accessor task-origin-id)
-      (deleted-p :type boolean
                  :initform nil
-                 :accessor deleted-p)
-      (done-p :type boolean
-              :initform nil
-              :accessor done-p))
+                 :accessor task-origin-id)
+      (is-deleted :type boolean
+                  :initform nil
+                  :accessor is-deleted)
+      (is-done :type boolean
+               :initform nil
+               :accessor is-done))
   (:metaclass persistent-metaclass))
 
 (defmethod initialize-instance :after ((this <task>) &key)
@@ -82,34 +83,26 @@ If it doesn't exist, creates new one and add it."
   (let ((content-type (and *response*
                            (headers *response* :content-type))))
     (if (string= content-type "application/json")
-        (json:encode-json
-         (list
-          :id (object-id this)
-          :body (task-body this)
-          :user (task-user this)
-          :owner (task-owner this)
-          :origin-id (task-origin-id this)
-          :isDone (done-p this))
-         stream)
+        (json:encode-json this stream)
         (call-next-method))))
 
 @export
 (defun get-task-by-id (id)
   "Find a task and return it by the object id."
   (let ((task (get-instance-by-id '<task> id)))
-    (unless (deleted-p task)
+    (unless (is-deleted task)
       task)))
 
 (defmethod drop-instance :after ((this <task>))
-  "For `elephant:drop-instance'. Set `deleted-p' T when it is dropped."
-  (setf (deleted-p this) t))
+  "For `elephant:drop-instance'. Set `is-deleted' T when it is dropped."
+  (setf (is-deleted this) t))
 
 @export
 (defun get-all-tasks ()
   "This is similar to `elephant:get-instances-by-class',
 but this returns sorted task list."
   (sort
-   (remove-if #'deleted-p
+   (remove-if #'is-deleted
               (get-instances-by-class '<task>))
    (lambda (a b)
      (loop with order = (task-order)

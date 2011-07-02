@@ -9,7 +9,9 @@
   (:import-from :gotumda.model.task
                 :<task>
                 :task-body
-                :done-p
+                :task-user
+                :task-owner
+                :is-done
                 :get-task-by-id
                 :get-all-tasks
                 :task-order)
@@ -51,12 +53,13 @@
                     (make-instance '<task>))))
      (cond
        ((string= "false" (getf params :|isDone|))
-        (setf (done-p task) nil))
+        (setf (is-done task) nil))
        ((string= "true" (getf params :|isDone|))
-        (setf (done-p task) t)))
-     (awhen (or (getf params :|body|)
-                (getf params :|xdp%3Abody|))
+        (setf (is-done task) t)))
+     (awhen (getf params :|body|)
        (setf (task-body task) it))
+     (setf (task-user task) (current-user))
+     (setf (task-owner task) (current-user))
      (princ-to-string task))))
 
 @url POST "/api/destroy.json"
@@ -73,7 +76,7 @@
   @ignore params
   "Get task list through API. Return value is a JSON string."
   (format nil "[~{~A~^,~}]"
-          (get-all-tasks)))
+          (reverse (get-all-tasks))))
 
 @url POST "/api/sort-tasks.json"
 (defun sort-tasks (params)
