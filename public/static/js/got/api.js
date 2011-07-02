@@ -41,20 +41,22 @@ got.Api.prototype.allTasks = function(callback) {
  * @param {String=} opt_body
  * @param {String=} opt_url
  * @param {Boolean=} opt_isDone
+ * @param {Function=} opt_callback
  */
-got.Api.prototype.update = function(id, opt_body, opt_isDone) {
+got.Api.prototype.update = function(id, opt_body, opt_isDone, opt_callback) {
   this.sendRequest('api/update.json', 'POST',
                    {'id': id,
                     'body': opt_body,
-                    'isDone': opt_isDone});
+                    'isDone': opt_isDone},
+                  opt_callback);
 };
 
-got.Api.prototype.copy = function(id) {
-  this.sendRequest('api/copy.json', 'POST', {'id': id});
+got.Api.prototype.copy = function(id, opt_callback) {
+  this.sendRequest('api/copy.json', 'POST', {'id': id}, opt_callback);
 };
 
-got.Api.prototype.move = function(id) {
-  this.sendRequest('api/move.json', 'POST', {'id': id});
+got.Api.prototype.move = function(id, opt_callback) {
+  this.sendRequest('api/move.json', 'POST', {'id': id}, opt_callback);
 };
 
 /**

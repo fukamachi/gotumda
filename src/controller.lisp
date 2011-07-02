@@ -96,7 +96,7 @@
   @ignore params
   "Get task list through API. Return value is a JSON string."
   (format nil "[~{~A~^,~}]"
-          (reverse (get-all-tasks))))
+          (get-all-tasks)))
 
 @url POST "/api/sort-tasks.json"
 (defun sort-tasks (params)

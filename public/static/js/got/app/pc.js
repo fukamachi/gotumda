@@ -60,7 +60,9 @@ got.app.PC.prototype.load = function() {
 got.app.PC.prototype.onSubmit_ = function(e) {
   var form = e.target;
   var textarea = goog.dom.getElementsByTagNameAndClass('textarea', null, form)[0];
-  this.api_.update(null, textarea.value, null);
+  this.api_.update(null, textarea.value, null, function(res) {
+    got.task.render(res, 'got-public-tasks');
+  });
   textarea.value = '';
 };
 
@@ -216,12 +218,17 @@ got.app.PC.prototype.listenTaskAction_ = function(element) {
     goog.events.listen(
       actionEl.childNodes[0], goog.events.EventType.CLICK,
       function(e) {
-        this.api_.copy(task['taskId']);
+        this.api_.copy(task['taskId'], function(res) {
+          got.task.render(res, 'got-public-tasks');
+        });
       }, false, this);
     goog.events.listen(
       actionEl.childNodes[1], goog.events.EventType.CLICK,
       function(e) {
-        this.api_.move(task['taskId']);
+        this.api_.move(task['taskId'], function(res) {
+          goog.dom.removeNode(task);
+          got.task.render(res, 'got-public-tasks');
+        });
       }, false, this);
   }, this);
 };

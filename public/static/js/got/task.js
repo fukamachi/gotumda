@@ -52,5 +52,5 @@ got.task.render = function(task, element) {
 
   taskEl['taskId'] = task['taskId'];
 
-  element.appendChild(taskEl);
+  goog.dom.insertChildAt(element, taskEl, 0);
 };
