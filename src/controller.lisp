@@ -9,7 +9,6 @@
   (:import-from :gotumda.model.task
                 :<task>
                 :task-body
-                :task-url
                 :done-p
                 :get-task-by-id
                 :get-all-tasks
@@ -20,7 +19,10 @@
   (:import-from :gotumda.util.elephant
                 :object-id)
   (:import-from :clack.response
-                :headers))
+                :headers)
+  (:import-from :gotumda.model.user
+                :current-user
+                :user-plist))
 
 (cl-annot:enable-annot-syntax)
 
@@ -37,7 +39,7 @@
   "Show index page."
   (render
    "index.html"
-   `(:user ,(gethash :hatena.user *session*)
+   `(:user ,(aand (current-user) (user-plist it))
      ,@params)))
 
 @url POST "/api/update.json"
@@ -55,9 +57,6 @@
      (awhen (or (getf params :|body|)
                 (getf params :|xdp%3Abody|))
        (setf (task-body task) it))
-     (awhen (or (getf params :|url|)
-                (getf params :|xdp%3Aurl|))
-       (setf (task-url task) it))
      (princ-to-string task))))
 
 @url POST "/api/destroy.json"

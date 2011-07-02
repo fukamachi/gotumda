@@ -12,6 +12,8 @@
                 :get-from-root
                 :root-existsp
                 :with-transaction)
+  (:import-from :json
+                :encode-json)
   (:import-from :clack.response
                 :headers)
   (:import-from :gotumda.util.elephant
@@ -50,12 +52,17 @@ If it doesn't exist, creates new one and add it."
 @export
 (defclass <task> ()
      ((body :type string
-            :initarg body
+            :initarg :body
             :accessor task-body)
-      (url :type string
-           :initarg url
-           :initform ""
-           :accessor task-url)
+      (user :type (or string <user>)
+            :initarg :user
+            :accessor task-user)
+      (owner :type (or string <user>)
+             :initarg :owner
+             :accessor task-owner)
+      (origin-id :type (or integer null)
+                 :initarg :origin-id
+                 :accessor task-origin-id)
       (deleted-p :type boolean
                  :initform nil
                  :accessor deleted-p)
@@ -75,16 +82,15 @@ If it doesn't exist, creates new one and add it."
   (let ((content-type (and *response*
                            (headers *response* :content-type))))
     (if (string= content-type "application/json")
-        (format stream
-                "{\"id\":\"~A\",\"body\":\"~A\",\"url\":\"~A\",\"isDone\":\"~A\"}"
-                (object-id this)
-                (task-body this)
-                (aif (task-url this)
-                     it
-                     "")
-                (if (done-p this)
-                    "true"
-                    "false"))
+        (json:encode-json
+         (list
+          :id (object-id this)
+          :body (task-body this)
+          :user (task-user this)
+          :owner (task-owner this)
+          :origin-id (task-origin-id this)
+          :isDone (done-p this))
+         stream)
         (call-next-method))))
 
 @export

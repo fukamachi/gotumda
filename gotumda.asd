@@ -15,6 +15,7 @@
                :cl-annot
                :elephant
                :anaphora
+               :arnesi
                :trivial-shell
                :split-sequence
                :ironclad
@@ -40,4 +41,5 @@
                  (:module "model"
                   :depends-on ("util")
                   :components
-                  ((:file "task")))))))
+                  ((:file "task")
+                   (:file "user" :depends-on ("task"))))))))
