@@ -216,12 +216,12 @@ got.app.PC.prototype.listenTaskAction_ = function(element) {
     goog.events.listen(
       actionEl.childNodes[0], goog.events.EventType.CLICK,
       function(e) {
-        this.api_.copy(task['task-id']);
+        this.api_.copy(task['taskId']);
       }, false, this);
     goog.events.listen(
       actionEl.childNodes[1], goog.events.EventType.CLICK,
       function(e) {
-        this.api_.move(task['task-id']);
+        this.api_.move(task['taskId']);
       }, false, this);
   }, this);
 };

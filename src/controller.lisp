@@ -70,6 +70,7 @@
     (with-transaction ()
       (let ((task (copy-task (get-task-by-id it))))
         (setf (task-owner task) (current-user))
+        (setf (task-user task) (current-user))
         (princ-to-string task)))))
 
 @url POST "/api/move.json"

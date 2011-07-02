@@ -123,6 +123,8 @@ a:hover {
 
 .got-taskitem {
   clear: both;
+  position: relative;
+  height: 80px;
 }
 
 .got-taskitem img {
@@ -143,4 +145,16 @@ a:hover {
 .got-taskitem-action a {
   padding: 3px;
   cursor: pointer;
+}
+
+.got-taskitem-data {
+  font-size: x-small;
+  position: absolute;
+  bottom: 20px;
+  left: 70px;
+}
+
+.got-taskitem-data img {
+  float: none;
+  vertical-align: middle;
 }

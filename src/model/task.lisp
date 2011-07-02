@@ -60,7 +60,7 @@ If it doesn't exist, creates new one and add it."
       (owner :type (or string <user>)
              :initarg :owner
              :accessor task-owner)
-      (origin-id :type (or integer string null)
+      (origin-id :type (or string integer null)
                  :initarg :origin-id
                  :initform nil
                  :accessor task-origin-id)
@@ -83,7 +83,16 @@ If it doesn't exist, creates new one and add it."
   (let ((content-type (and *response*
                            (headers *response* :content-type))))
     (if (string= content-type "application/json")
-        (json:encode-json this stream)
+        (json:encode-json
+         `((:|task-id| . ,(object-id this))
+           (:|body| . ,(task-body this))
+           (:|user| . ,(task-user this))
+           (:|owner| . ,(task-owner this))
+           (:|origin-task| . ,(awhen (task-origin-id this)
+                                (get-task-by-id it)))
+           (:|is-deleted| . ,(is-deleted this))
+           (:|is-done| . ,(is-done this)))
+          stream)
         (call-next-method))))
 
 @export
