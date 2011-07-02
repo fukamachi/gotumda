@@ -46,7 +46,7 @@
 
 @url POST "/api/update.json"
 (defun update (params)
-  "Create/Edit a task."
+  "Create/Edit a task. Allowed parameters are `id', `body' and `is-done'."
   (with-transaction ()
    (let ((task (aif (getf params :|id|)
                     (get-task-by-id it)

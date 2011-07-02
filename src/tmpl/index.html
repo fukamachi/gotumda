@@ -19,6 +19,7 @@
 
 <div id="content">
   <div id="content-left">
+    <% @if user %>
     <div id="got-post-label">
       What are you going to do?
     </div>
@@ -26,6 +27,9 @@
       <textarea name=""></textarea>
       <input type="submit" value="Add" />
     </form>
+    <% @else %>
+    <div id="got-please-login">Please <a href="/auth">Login</a> to add your tasks.</div>
+    <% @endif %>
     <div id="got-public-tasks">
       Loading..
     </div>
