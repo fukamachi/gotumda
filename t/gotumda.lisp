@@ -39,7 +39,7 @@ Example:
 
 ;; cleanup database
 (drop-instances
- (get-instances-by-class 'gotumda.model:<task>))
+ (get-instances-by-class 'gotumda.model.task:<task>))
 
 (is (request-json "api/all-tasks.json")
     '()

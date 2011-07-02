@@ -6,7 +6,7 @@
         :split-sequence)
   (:import-from :gotumda.view.emb
                 :render)
-  (:import-from :gotumda.model
+  (:import-from :gotumda.model.task
                 :<task>
                 :task-body
                 :task-url

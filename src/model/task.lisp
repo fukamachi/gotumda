@@ -1,4 +1,4 @@
-(clack.util:namespace gotumda.model
+(clack.util:namespace gotumda.model.task
   (:use :cl
         :caveman
         :anaphora)

@@ -37,4 +37,7 @@
                   :components
                   ((:file "elephant")))
                  (:file "controller" :depends-on ("util" "model"))
-                 (:file "model" :depends-on ("util"))))))
+                 (:module "model"
+                  :depends-on ("util")
+                  :components
+                  ((:file "task")))))))
