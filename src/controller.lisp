@@ -14,7 +14,8 @@
                 :is-done
                 :get-task-by-id
                 :get-all-tasks
-                :task-order)
+                :task-order
+                :copy-task)
   (:import-from :elephant
                 :with-transaction
                 :drop-instance)
@@ -61,6 +62,24 @@
      (setf (task-user task) (current-user))
      (setf (task-owner task) (current-user))
      (princ-to-string task))))
+
+@url POST "/api/copy.json"
+(defun copy (params)
+  "Copy a task to my task."
+  (awhen (getf params :|id|)
+    (with-transaction ()
+      (let ((task (copy-task (get-task-by-id it))))
+        (setf (task-owner task) (current-user))
+        (princ-to-string task)))))
+
+@url POST "/api/move.json"
+(defun move (params)
+  "Move the task to my task."
+  (awhen (getf params :|id|)
+    (with-transaction ()
+      (let ((task (get-task-by-id it)))
+        (setf (task-owner task) (current-user))
+        (princ-to-string task)))))
 
 @url POST "/api/destroy.json"
 (defun destroy (params)

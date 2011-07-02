@@ -53,6 +53,7 @@ got.app.PC.prototype.load = function() {
       var form = document.getElementById('got-post-task');
       goog.events.listen(form, goog.events.EventType.SUBMIT,
                          this.onSubmit_, false, this);
+      this.listenTaskAction_(element);
     }, this));
 };
 
@@ -211,22 +212,16 @@ got.app.PC.prototype.listenTaskAction_ = function(element) {
   element = goog.dom.getElement(element);
   var tasks = goog.dom.getElementsByClass('got-taskitem', element);
   goog.array.forEach(tasks, function(task) {
-    var doneEl = goog.dom.getElementByClass('got-taskitem-done', task);
-    var bodyEl = goog.dom.getElementByClass('got-taskitem-body', task);
     var actionEl = goog.dom.getElementByClass('got-taskitem-action', task);
     goog.events.listen(
       actionEl.childNodes[0], goog.events.EventType.CLICK,
       function(e) {
-        // TODO: implement Edit action.
+        this.api_.copy(task['task-id']);
       }, false, this);
     goog.events.listen(
       actionEl.childNodes[1], goog.events.EventType.CLICK,
       function(e) {
-        if (confirm('Are you sure you want to permanently delete "'
-                    +goog.dom.getTextContent(bodyEl)+'"?')) {
-          goog.dom.removeNode(task);
-          this.api_.destroy(doneEl.value);
-        }
+        this.api_.move(task['task-id']);
       }, false, this);
   }, this);
 };

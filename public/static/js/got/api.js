@@ -49,6 +49,14 @@ got.Api.prototype.update = function(id, opt_body, opt_isDone) {
                     'isDone': opt_isDone});
 };
 
+got.Api.prototype.copy = function(id) {
+  this.sendRequest('api/copy.json', 'POST', {'id': id});
+};
+
+got.Api.prototype.move = function(id) {
+  this.sendRequest('api/move.json', 'POST', {'id': id});
+};
+
 /**
  * Request to 'api/destroy.json'.
  * @param {Integer} id

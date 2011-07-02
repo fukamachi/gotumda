@@ -60,7 +60,7 @@ If it doesn't exist, creates new one and add it."
       (owner :type (or string <user>)
              :initarg :owner
              :accessor task-owner)
-      (origin-id :type (or integer null)
+      (origin-id :type (or integer string null)
                  :initarg :origin-id
                  :initform nil
                  :accessor task-origin-id)
@@ -85,6 +85,16 @@ If it doesn't exist, creates new one and add it."
     (if (string= content-type "application/json")
         (json:encode-json this stream)
         (call-next-method))))
+
+@export
+(defmethod copy-task ((this <task>))
+  (make-instance '<task>
+     :body (task-body this)
+     :user (task-user this)
+     :owner (task-owner this)
+     :origin-id (object-id this)
+     :is-deleted (is-deleted this)
+     :is-done (is-done this)))
 
 @export
 (defun get-task-by-id (id)

@@ -36,5 +36,7 @@ got.task.render = function(task, element) {
   );
   taskEl.appendChild(taskActionEl);
 
+  taskEl['task-id'] = task['oid'];
+
   element.appendChild(taskEl);
 };
