@@ -73,67 +73,46 @@ a:hover {
  * Content
  **/
 
-#got-current-tasks {
-  clear: both;
-  border-top: 1px solid #ccc;
-}
-
-#got-done-tasks {
-  color: gray;
-  font-size: x-small;
-  padding: 5px 15px;
-}
-
-/* Task Item Row */
-.got-taskitem {
-  position: relative;
+#content {
+  height: 800px;
   background-color: white;
+  position: relative;
 }
 
-#got-current-tasks .got-taskitem {
-  height: 30px;
-  border-bottom: 1px solid #ccc;
-  box-shadow: 1px 1px 3px #888;
+#content-left {
+  float: left;
+  width: 400px;
+  height: 100%;
+  padding: 20px 0 0 20px;
 }
 
-#got-done-tasks .got-taskitem {
-  height: 20px;
-  line-height: 120%;
-  padding: 3px 5px 0;
-}
-
-.got-taskitem-body {
-  padding-top: 3px;
-  width: 600px;
+#content-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #888;
+  width: 180px;
   height: 100%;
 }
 
-.got-taskitem-body div {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 500px;
-  float: left;
+#got-post-task textarea {
+  width: 95%;
+  height: 40px;
 }
 
-#got-current-tasks .got-taskitem-done {
-  margin: 10px 5px 0 5px;
-}
-
-.got-taskitem-done {
-  float: left;
-  margin-right: 5px;
-}
-
-.got-taskitem-action {
-  font-size: x-small;
-  position: absolute;
-  top: 4px;
-  right: 8px;
-  height: 0;
-}
-
-.got-taskitem-action a {
-  padding: 0 3px;
+#got-post-task input {
+  float: right;
+  margin-right: 20px;
+  width: 60px;
+  height: 25px;
+  box-shadow: none;
+  background-color: #eee;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
   cursor: pointer;
+}
+
+#got-public-tasks {
+  clear: both;
 }

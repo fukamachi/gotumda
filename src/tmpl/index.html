@@ -18,12 +18,20 @@
 <% @include header.html %>
 
 <div id="content">
-  <div id="got-all-tasks">
-    <div id="got-current-tasks">
+  <div id="content-left">
+    <div id="got-post-label">
+      What are you going to do?
+    </div>
+    <form id="got-post-task" onsubmit="return false;">
+      <textarea name=""></textarea>
+      <input type="submit" value="Add" />
+    </form>
+    <div id="got-public-tasks">
       Loading..
     </div>
-    <div id="got-done-tasks">
-    </div>
+  </div>
+  <div id="content-right">
+    <br />
   </div>
 </div>
 

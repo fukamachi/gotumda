@@ -36,7 +36,7 @@ got.app.PC = function(baseUri) {
    */
   this.isOnLink_ = false;
 
-  this.load();
+  //this.load();
 };
 
 /**
