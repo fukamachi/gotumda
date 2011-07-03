@@ -36,6 +36,11 @@ a:hover {
   text-align: left;
 }
 
+h2 {
+  font-size: 14pt;
+  margin-top: 0;
+}
+
 /**
  * Header
  **/

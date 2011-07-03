@@ -22,18 +22,8 @@
     <a href="/tasks">My Tasks</a>
   </div>
   <div id="content-right">
-    <% @if user %>
-    <div id="got-post-label">
-      What are you going to do?
-    </div>
-    <form id="got-post-task" onsubmit="return false;">
-      <textarea name=""></textarea>
-      <input type="submit" value="Add" />
-    </form>
-    <% @else %>
-    <div id="got-please-login">Please <a href="/auth">Login</a> to add your tasks.</div>
-    <% @endif %>
-    <div id="got-public-tasks">
+    <h2>My Tasks</h2>
+    <div id="got-my-tasks">
       Loading..
     </div>
   </div>

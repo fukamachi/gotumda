@@ -45,6 +45,14 @@
    `(:user ,(aand (current-user) (user-plist it))
      ,@params)))
 
+@url GET "/tasks"
+(defun my-tasks (params)
+  "Show a list of owned tasks."
+  (render
+   "tasks.html"
+   `(:user ,(aand (current-user) (user-plist it))
+     ,@params)))
+
 @url POST "/api/update.json"
 (defun update (params)
   "Create/Edit a task. Allowed parameters are `id', `body' and `is-done'."

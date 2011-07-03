@@ -36,25 +36,33 @@ got.app.PC = function(baseUri) {
    */
   this.isOnLink_ = false;
 
-  this.load();
+  if (goog.dom.getElement('got-public-tasks')) {
+    this.loadPublicTasks();
+  }
+  if (goog.dom.getElement('got-my-tasks')) {
+    this.loadMyTasks();
+  }
 };
 
 /**
  * Load all tasks and render them in the specified element.
  */
-got.app.PC.prototype.load = function() {
+got.app.PC.prototype.loadPublicTasks = function() {
   this.api_.allTasks(
     goog.bind(function(tasks) {
-      var element = document.getElementById('got-public-tasks');
+      var element = goog.dom.getElement('got-public-tasks');
       element.innerHTML = '';
       goog.array.forEach(tasks, function(task) {
         got.task.render(task, element);
       });
-      var form = document.getElementById('got-post-task');
+      var form = goog.dom.getElement('got-post-task');
       goog.events.listen(form, goog.events.EventType.SUBMIT,
                          this.onSubmit_, false, this);
       this.listenTaskAction_(element);
     }, this));
+};
+
+got.app.PC.prototype.loadMyTasks = function() {
 };
 
 got.app.PC.prototype.onSubmit_ = function(e) {
@@ -137,12 +145,12 @@ got.app.PC.prototype.onCheck_ = function(e) {
   if (checkEl.checked) {
     goog.events.unlisten(taskEl, goog.events.EventType.MOUSEOVER,
                          this.dlg_.handleDragItemMouseover_, false, this.dlg_);
-    var doneTaskListEl = document.getElementById('got-done-tasks');
+    var doneTaskListEl = goog.dom.getElement('got-done-tasks');
     goog.dom.insertChildAt(doneTaskListEl, taskEl, 0);
   } else {
     goog.events.listen(taskEl, goog.events.EventType.MOUSEOVER,
                        this.dlg_.handleDragItemMouseover_, false, this.dlg_);
-    var curTaskListEl = document.getElementById('got-current-tasks');
+    var curTaskListEl = goog.dom.getElement('got-current-tasks');
     curTaskListEl.appendChild(taskEl);
   }
   this.api_.update(
