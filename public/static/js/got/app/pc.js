@@ -264,7 +264,6 @@ got.app.PC.prototype.listenPostButton_ = function() {
     goog.events.listen(document.body, goog.events.EventType.CLICK,
                        this.blurPostForm_, false, this);
   }, false, this);
-
 };
 
 /**

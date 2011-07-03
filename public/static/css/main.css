@@ -10,7 +10,7 @@ body {
   cursor: move;
   text-align: left;
   background-color: #eee;
-  border: 1px solid #ccc;
+  border: 1px solid #ccc !important;
 }
 
 .dragging {
@@ -45,8 +45,8 @@ h2 {
  **/
 
 #header {
-  background: -webkit-gradient(linear, left top, left bottom, from(#555), to(#000));
-  background: -moz-linear-gradient(top, #555, #000);
+  background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#000));
+  background: -moz-linear-gradient(top, #666, #000);
   position: relative;
   padding: 1px 1px;
   margin-bottom: 5px;
@@ -88,8 +88,7 @@ h2 {
 #content-left {
   float: left;
   background-color: rgb(228,236,246);
-  border-top: 1px solid rgb(177,197,218);
-  border-left: 1px solid rgb(177,197,218);
+  border: 1px solid rgb(177,197,218);
   width: 148px;
   height: 100%;
   padding: 15px 0 0;
@@ -101,6 +100,7 @@ h2 {
   text-decoration: none;
   padding-left: 8px;
   cursor: pointer;
+  width: 141px;
 }
 
 #content-left a:hover {
@@ -113,6 +113,8 @@ a.current {
   text-decoration: none;
   background-color: white;
   font-weight: bold;
+  border-top: 1px solid rgb(177,197,218);
+  border-bottom: 1px solid rgb(177,197,218);
 }
 
 #content-right {
@@ -182,6 +184,7 @@ a.current {
   clear: both;
   height: 20px;
   padding: 4px;
+  border: 1px solid white;
 }
 
 .got-taskitem img.got-taskitem-owner {
