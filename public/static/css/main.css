@@ -226,6 +226,7 @@ a.current {
 }
 
 .got-taskitem-data {
+  color: #888;
   font-size: x-small;
   position: absolute;
   bottom: 20px;
