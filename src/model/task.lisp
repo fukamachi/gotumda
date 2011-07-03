@@ -8,6 +8,7 @@
                 :controller-recreate-instance
                 :drop-instance
                 :get-instances-by-class
+                :get-instances-by-value
                 :add-to-root
                 :get-from-root
                 :root-existsp
@@ -61,7 +62,8 @@ If it doesn't exist, creates new one and add it."
             :accessor task-user)
       (owner :type (or <user> null)
              :initarg :owner
-             :accessor task-owner)
+             :accessor task-owner
+             :index t)
       (origin-id :type (or string integer <task> null)
                  :initarg :origin-id
                  :initform nil
@@ -133,3 +135,9 @@ but this returns sorted task list."
            do (cond
                 ((= a id) (return t))
                 ((= b id) (return nil)))))))
+
+@export
+(defun get-user-tasks (user)
+  (when user
+    (remove-if #'is-deleted
+               (get-instances-by-value '<task> 'owner user))))

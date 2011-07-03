@@ -14,6 +14,7 @@
                 :is-done
                 :get-task-by-id
                 :get-all-tasks
+                :get-user-tasks
                 :task-order
                 :copy-task)
   (:import-from :elephant
@@ -105,6 +106,12 @@
   "Get task list through API. Return value is a JSON string."
   (format nil "[~{~A~^,~}]"
           (get-all-tasks)))
+
+@url GET "/api/my-tasks.json"
+(defun tasks (params)
+  @ignore params
+  (format nil "[~{~A~^,~}]"
+          (get-user-tasks (current-user))))
 
 @url POST "/api/sort-tasks.json"
 (defun sort-tasks (params)

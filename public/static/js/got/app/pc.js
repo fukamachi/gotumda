@@ -63,6 +63,15 @@ got.app.PC.prototype.loadPublicTasks = function() {
 };
 
 got.app.PC.prototype.loadMyTasks = function() {
+  this.api_.myTasks(
+    goog.bind(function(tasks) {
+      var element = goog.dom.getElement('got-my-tasks');
+      element.innerHTML = '';
+      goog.array.forEach(tasks, function(task) {
+        got.task.renderLine(task, element);
+      });
+    }, this)
+  );
 };
 
 got.app.PC.prototype.onSubmit_ = function(e) {
