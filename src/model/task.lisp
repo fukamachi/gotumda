@@ -13,6 +13,8 @@
                 :get-from-root
                 :root-existsp
                 :with-transaction)
+  (:import-from :cl-ppcre
+                :do-matches)
   (:import-from :json
                 :encode-json)
   (:import-from :clack.response
@@ -23,6 +25,7 @@
   (:import-from :gotumda.model.user
                 :<user>)
   (:export :task-body
+           :task-projects
            :is-deleted
            :is-done))
 
@@ -56,6 +59,7 @@ If it doesn't exist, creates new one and add it."
 (defclass <task> ()
      ((body :type string
             :initarg :body
+            :initform ""
             :accessor task-body)
       (user :type (or <user> null)
             :initarg :user
@@ -73,13 +77,26 @@ If it doesn't exist, creates new one and add it."
                   :accessor is-deleted)
       (is-done :type boolean
                :initform nil
-               :accessor is-done))
+               :accessor is-done)
+      (projects :type list
+                :initform nil
+                :accessor task-projects))
   (:metaclass persistent-metaclass))
+
+@export
+(defmethod parse-projects ((this <task>))
+  (let (projects)
+    (ppcre:do-matches (s e "#(\\w+)" (task-body this))
+     (pushnew
+      (subseq (task-body this) s e)
+      projects))
+    projects))
 
 (defmethod initialize-instance :after ((this <task>) &key)
   "Put the object ID into the task order collection."
   (vector-push-extend (object-id this) (task-order))
   (with-transaction ()
+    (setf (task-projects this) (parse-projects this))
     (add-to-root "task-order"
                  (task-order))))
 
@@ -95,7 +112,8 @@ If it doesn't exist, creates new one and add it."
            (:|origin-task| . ,(awhen (task-origin-id this)
                                 (get-task-by-id it)))
            (:|is-deleted| . ,(is-deleted this))
-           (:|is-done| . ,(is-done this)))
+           (:|is-done| . ,(is-done this))
+           (:|projects| . ,(task-projects this)))
           stream)
         (call-next-method))))
 

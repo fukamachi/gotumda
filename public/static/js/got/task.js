@@ -10,6 +10,7 @@ goog.provide('got.task');
 
 goog.require('goog.dom');
 goog.require('goog.json');
+goog.require('goog.array');
 
 /**
  * Render this task into the specified element.
@@ -36,6 +37,15 @@ got.task.render = function(task, element) {
   }
 
   var taskBodyEl = goog.dom.createDom('div', 'got-taskitem-body');
+  if (!goog.array.isEmpty(task['projects'])) {
+    goog.array.forEach(task['projects'], function(project) {
+      var a = goog.dom.createDom('a',
+                                 {'href': './project/'+project.substring(1)},
+                                 project);
+      task['body'] = task['body'].replace(
+        project, goog.dom.getOuterHtml(a));
+    });
+  }
   taskBodyEl.innerHTML = task['body'];
   taskEl.appendChild(taskBodyEl);
 
@@ -54,7 +64,7 @@ got.task.render = function(task, element) {
   var copyEl = goog.dom.createDom('a', null, 'Copy');
   var passEl = goog.dom.createDom('a', null, 'PassMe');
   var taskActionEl = goog.dom.createDom(
-    'div', {'class': 'got-taskitem-action'},
+    'div', 'got-taskitem-action',
     copyEl, passEl
   );
   taskEl.appendChild(taskActionEl);

@@ -12,11 +12,13 @@
                 :task-user
                 :task-owner
                 :is-done
+                :task-projects
                 :get-task-by-id
                 :get-all-tasks
                 :get-user-tasks
                 :task-order
-                :copy-task)
+                :copy-task
+                :parse-projects)
   (:import-from :elephant
                 :with-transaction
                 :drop-instance)
@@ -57,20 +59,22 @@
 @url POST "/api/update.json"
 (defun update (params)
   "Create/Edit a task. Allowed parameters are `id', `body' and `is-done'."
-  (with-transaction ()
-   (let ((task (aif (getf params :|id|)
-                    (get-task-by-id it)
-                    (make-instance '<task>))))
-     (cond
-       ((string= "false" (getf params :|isDone|))
-        (setf (is-done task) nil))
-       ((string= "true" (getf params :|isDone|))
-        (setf (is-done task) t)))
-     (awhen (getf params :|body|)
-       (setf (task-body task) it))
-     (setf (task-user task) (current-user))
-     (setf (task-owner task) (current-user))
-     (princ-to-string task))))
+  (when (current-user)
+    (with-transaction ()
+      (let ((task (aif (getf params :|id|)
+                       (get-task-by-id it)
+                       (make-instance '<task>))))
+        (cond
+          ((string= "false" (getf params :|isDone|))
+           (setf (is-done task) nil))
+          ((string= "true" (getf params :|isDone|))
+           (setf (is-done task) t)))
+        (awhen (getf params :|body|)
+          (setf (task-body task) it)
+          (setf (task-projects task) (parse-projects task)))
+        (setf (task-user task) (current-user))
+        (setf (task-owner task) (current-user))
+        (princ-to-string task)))))
 
 @url POST "/api/copy.json"
 (defun copy (params)

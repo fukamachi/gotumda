@@ -12,6 +12,7 @@
   :license "Apache License 2.0"
   :version "0.1-SNAPSHOT"
   :depends-on (:caveman
+               :cl-ppcre
                :cl-annot
                :elephant
                :anaphora
