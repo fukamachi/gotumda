@@ -41,20 +41,26 @@
           "application/json"))
   (next-route))
 
+(defun render-page (params)
+  (render
+   "layout.html"
+   `(:user ,(aand (current-user) (user-plist it))
+     ,@params)))
+
 @url GET "/"
 (defun index (params)
   "Show index page."
-  (render
-   "index.html"
-   `(:user ,(aand (current-user) (user-plist it))
+  (render-page
+   `(:timeline t
+     :content "index.html"
      ,@params)))
 
 @url GET "/tasks"
 (defun my-tasks (params)
   "Show a list of owned tasks."
-  (render
-   "tasks.html"
-   `(:user ,(aand (current-user) (user-plist it))
+  (render-page
+   `(:my-tasks t
+     :content "tasks.html"
      ,@params)))
 
 @url POST "/api/update.json"
