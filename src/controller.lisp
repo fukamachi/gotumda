@@ -134,6 +134,7 @@
 @url GET "/api/my-projects.json"
 (defun projects (params)
   @ignore params
-  (awhen (current-user)
-    (format nil "[~{~S~^,~}]"
-            (user-projects it))))
+  (format nil "[~{~S~^,~}]"
+          (aif (current-user)
+               (user-projects it)
+               nil)))
