@@ -1,0 +1,16 @@
+<% @if user %>
+<div id="got-post-button">
+  Add a new task
+</div>
+<div id="got-post-form" style="display: none;">
+  <div id="got-post-label">
+    What are you going to do?
+  </div>
+  <form id="got-post-task" onsubmit="return false;">
+    <textarea name=""></textarea>
+    <input type="submit" value="Add" />
+  </form>
+</div>
+<% @else %>
+<div id="got-please-login">Please <a href="/auth">Login</a> to add your tasks.</div>
+<% @endif %>

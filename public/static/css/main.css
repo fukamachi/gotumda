@@ -37,7 +37,7 @@ a:hover {
 
 h2 {
   font-size: 14pt;
-  margin-top: 0;
+  clear: both;
 }
 
 /**
@@ -122,13 +122,32 @@ a.current {
   padding: 10px 0 0 20px;
 }
 
+#got-post-button {
+  border-radius: 12px;
+  background-image:
+      url(/public/static/img/plus.png),
+      -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eee));
+  background-image:
+      url(/public/static/img/plus.png),
+      -moz-linear-gradient(top, #fff, #eee);
+  background-repeat: no-repeat;
+  background-position:5px 6px;
+  padding: 2px 24px;
+  border: 1px solid #ddd;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#got-post-task {
+  text-align: right;
+}
+
 #got-post-task textarea {
   width: 95%;
   height: 30px;
 }
 
 #got-post-task input {
-  float: right;
   margin-right: 20px;
   width: 60px;
   height: 25px;
@@ -141,6 +160,11 @@ a.current {
 }
 
 #got-public-tasks {
+  margin-top: 15px;
+  clear: both;
+}
+
+#got-my-tasks {
   clear: both;
 }
 

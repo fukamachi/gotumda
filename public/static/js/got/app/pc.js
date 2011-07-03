@@ -42,6 +42,8 @@ got.app.PC = function(baseUri) {
   if (goog.dom.getElement('got-my-tasks')) {
     this.loadMyTasks();
   }
+
+  this.listenPostButton_();
 };
 
 /**
@@ -249,4 +251,36 @@ got.app.PC.prototype.listenTaskAction_ = function(element) {
         });
       }, false, this);
   }, this);
+};
+
+got.app.PC.prototype.listenPostButton_ = function() {
+  var button = goog.dom.getElement('got-post-button');
+  var form = goog.dom.getElement('got-post-form');
+  var textarea = goog.dom.getElementsByTagNameAndClass('textarea', null, form)[0];
+  goog.events.listen(button, goog.events.EventType.CLICK, function(e) {
+    goog.style.showElement(button, false);
+    goog.style.showElement(form, true);
+    textarea.focus();
+    goog.events.listen(document.body, goog.events.EventType.CLICK,
+                       this.blurPostForm_, false, this);
+  }, false, this);
+
+};
+
+/**
+ * @private
+ */
+got.app.PC.prototype.blurPostForm_ = function(e) {
+  var button = goog.dom.getElement('got-post-button');
+  var form = goog.dom.getElement('got-post-form');
+  var textarea = goog.dom.getElementsByTagNameAndClass('textarea', null, form)[0];
+  if (textarea.value === '' &&
+      e.target !== button &&
+      !goog.dom.getAncestor(e.target, function(el) {
+        return el.id === 'got-post-form'; })) {
+    goog.style.showElement(form, false);
+    goog.style.showElement(button, true);
+    goog.events.unlisten(document.body, goog.events.EventType.CLICK,
+                         this.blurPostForm_, false, this);
+  }
 };
