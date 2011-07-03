@@ -24,7 +24,16 @@ got.task.render = function(task, element) {
   element = goog.dom.getElement(element);
 
   var taskEl =  goog.dom.createDom('div', 'got-taskitem');
-  taskEl.appendChild(goog.dom.createDom('img', {'src': task['user']['imageUrl']}));
+
+  taskEl.appendChild(goog.dom.createDom('img',
+                                        {'src': task['owner']['imageUrl'],
+                                         'class': 'got-taskitem-owner'}));
+  if (task['user']['name'] !== task['owner']['name']) {
+    taskEl.appendChild(
+      goog.dom.createDom('img', {'src': task['user']['thumbnailUrl'],
+                                 'class': 'got-taskitem-user'})
+    );
+  }
 
   var taskBodyEl = goog.dom.createDom('div', 'got-taskitem-body');
   taskBodyEl.innerHTML = task['body'];
@@ -43,10 +52,10 @@ got.task.render = function(task, element) {
   taskEl.appendChild(taskDataEl);
 
   var copyEl = goog.dom.createDom('a', null, 'Copy');
-  var moveEl = goog.dom.createDom('a', null, 'Move');
+  var passEl = goog.dom.createDom('a', null, 'PassMe');
   var taskActionEl = goog.dom.createDom(
     'div', {'class': 'got-taskitem-action'},
-    copyEl, moveEl
+    copyEl, passEl
   );
   taskEl.appendChild(taskActionEl);
 

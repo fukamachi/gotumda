@@ -81,18 +81,17 @@ a:hover {
 
 #content-left {
   float: left;
-  width: 400px;
+  background-color: #eee;
+  border: 1px solid #aaa;
+  width: 178px;
   height: 100%;
-  padding: 10px 0 0 20px;
 }
 
 #content-right {
-  position: absolute;
-  right: 0;
-  top: 0;
-  background-color: #888;
-  width: 180px;
+  float: left;
+  width: 400px;
   height: 100%;
+  padding: 10px 0 0 20px;
 }
 
 #got-post-task textarea {
@@ -127,8 +126,14 @@ a:hover {
   height: 80px;
 }
 
-.got-taskitem img {
+.got-taskitem img.got-taskitem-owner {
   float: left;
+}
+
+.got-taskitem img.got-taskitem-user {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .got-taskitem-body {

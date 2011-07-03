@@ -41,5 +41,5 @@
                  (:module "model"
                   :depends-on ("util")
                   :components
-                  ((:file "task")
+                  ((:file "task" :depends-on ("user"))
                    (:file "user")))))))

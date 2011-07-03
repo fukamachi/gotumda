@@ -19,6 +19,8 @@
   (:import-from :gotumda.util.elephant
                 :object-id
                 :get-instance-by-id)
+  (:import-from :gotumda.model.user
+                :<user>)
   (:export :task-body
            :is-deleted
            :is-done))
@@ -54,13 +56,13 @@ If it doesn't exist, creates new one and add it."
      ((body :type string
             :initarg :body
             :accessor task-body)
-      (user :type (or string <user>)
+      (user :type (or <user> null)
             :initarg :user
             :accessor task-user)
-      (owner :type (or string <user>)
+      (owner :type (or <user> null)
              :initarg :owner
              :accessor task-owner)
-      (origin-id :type (or string integer null)
+      (origin-id :type (or string integer <task> null)
                  :initarg :origin-id
                  :initform nil
                  :accessor task-origin-id)
