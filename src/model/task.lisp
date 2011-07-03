@@ -23,9 +23,10 @@
                 :object-id
                 :get-instance-by-id)
   (:import-from :gotumda.model.user
-                :<user>)
-  (:export :task-body
-           :task-projects
+                :<user>
+                :current-user
+                :user-projects)
+  (:export :task-projects
            :is-deleted
            :is-done))
 
@@ -60,7 +61,7 @@ If it doesn't exist, creates new one and add it."
      ((body :type string
             :initarg :body
             :initform ""
-            :accessor task-body)
+            :reader task-body)
       (user :type (or <user> null)
             :initarg :user
             :accessor task-user)
@@ -82,6 +83,15 @@ If it doesn't exist, creates new one and add it."
                 :initform nil
                 :accessor task-projects))
   (:metaclass persistent-metaclass))
+
+@export
+(defmethod (setf task-body) (body (this <task>))
+  (setf (slot-value this 'body) body)
+  (let ((projects (parse-projects this)))
+    (setf (task-projects this) projects)
+    (when (current-user)
+      (setf (user-projects (current-user))
+            (append projects (user-projects (current-user)))))))
 
 @export
 (defmethod parse-projects ((this <task>))
