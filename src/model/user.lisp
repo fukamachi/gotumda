@@ -23,11 +23,11 @@
             :index t)
       (image-url :type string
                  :initarg :image-url
-                 :initform ""
+                 :initform "/public/static/img/no-image.gif"
                  :accessor image-url)
       (thumbnail-url :type string
                      :initarg :thumbnail-url
-                     :initform ""
+                     :initform "/public/static/img/no-image-s.gif"
                      :accessor thumbnail-url)
       (projects :type list
                 :initform nil
