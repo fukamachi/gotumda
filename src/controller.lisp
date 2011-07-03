@@ -16,6 +16,7 @@
                 :get-task-by-id
                 :get-all-tasks
                 :get-user-tasks
+                :get-project-tasks
                 :task-order
                 :copy-task
                 :parse-projects)
@@ -51,7 +52,7 @@
      ,@params)))
 
 @url GET "/"
-(defun index (params)
+(defun index-page (params)
   "Show index page."
   (render-page
    `(:timeline t
@@ -59,13 +60,13 @@
      ,@params)))
 
 @url GET "/project/:project"
-(defun project (params)
+(defun project-page (params)
   (render-page
    `(:content "project.html"
      ,@params)))
 
 @url GET "/tasks"
-(defun tasks (params)
+(defun tasks-page (params)
   "Show a list of owned tasks."
   (render-page
    `(:my-tasks t
@@ -147,3 +148,8 @@
           (aif (current-user)
                (user-projects it)
                nil)))
+
+@url GET "/api/project.json"
+(defun project (params)
+  (format nil "[~{~A~^,~}]"
+          (get-project-tasks (getf params :|project|))))

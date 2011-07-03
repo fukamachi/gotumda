@@ -40,7 +40,7 @@ got.task.render = function(task, element) {
   if (!goog.array.isEmpty(task['projects'])) {
     goog.array.forEach(task['projects'], function(project) {
       var a = goog.dom.createDom('a',
-                                 {'href': './project/'+project},
+                                 {'href': '/project/'+project},
                                  '#'+project);
       task['body'] = task['body'].replace(
         '#'+project, goog.dom.getOuterHtml(a));

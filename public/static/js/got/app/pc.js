@@ -14,6 +14,7 @@ goog.require('goog.dom');
 goog.require('goog.style');
 goog.require('goog.events');
 goog.require('goog.array');
+goog.require('goog.uri.utils');
 goog.require('goog.fx.DragListGroup');
 goog.require('goog.fx.DragListDirection');
 
@@ -41,6 +42,9 @@ got.app.PC = function(baseUri) {
   }
   if (goog.dom.getElement('got-my-tasks')) {
     this.loadMyTasks();
+  }
+  if (goog.dom.getElement('got-project-tasks')) {
+    this.loadProjectTasks();
   }
 
   this.listenPostButton_();
@@ -74,6 +78,19 @@ got.app.PC.prototype.loadMyTasks = function() {
       });
       this.listenDragEvents_(element);
     }, this)
+  );
+};
+
+got.app.PC.prototype.loadProjectTasks = function() {
+  this.api_.projectTasks(
+    goog.uri.utils.getPath(location.href).replace(/^\/project\//, ''),
+    goog.bind(function(tasks) {
+      var element = goog.dom.getElement('got-project-tasks');
+      element.innerHTML = '';
+      goog.array.forEach(tasks, function(task) {
+        got.task.render(task, element);
+      });
+    })
   );
 };
 

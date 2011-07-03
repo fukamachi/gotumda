@@ -5,6 +5,12 @@
   (:import-from :elephant
                 :persistent-metaclass
                 :get-instance-by-value)
+  (:import-from :clack.response
+                :headers)
+  (:import-from :json
+                :encode-json)
+  (:import-from :alexandria
+                :plist-alist)
   (:export :user-projects))
 
 (cl-annot:enable-annot-syntax)
@@ -21,9 +27,6 @@
       (thumbnail-url :type string
                      :initarg :thumbnail-url
                      :accessor thumbnail-url)
-      (tasks :type list
-             :initform nil
-             :accessor user-tasks)
       (projects :type list
                 :initform nil
                 :accessor user-projects))
@@ -48,5 +51,13 @@
   (list
    :name (user-name this)
    :image-url (image-url this)
-   :thumbnail-url (thumbnail-url this)
-   :tasks (user-tasks this)))
+   :thumbnail-url (thumbnail-url this)))
+
+(defmethod print-object ((this <user>) stream)
+  (let ((content-type (and *response*
+                           (headers *response* :content-type))))
+    (if (string= content-type "application/json")
+        (json:encode-json
+         (plist-alist (user-plist this))
+         stream)
+        (call-next-method))))

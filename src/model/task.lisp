@@ -170,3 +170,10 @@ but this returns sorted task list."
   (when user
     (remove-if #'is-deleted
                (get-instances-by-value '<task> 'owner user))))
+
+@export
+(defun get-project-tasks (project)
+  (loop for task in (get-instances-by-class '<task>)
+        if (and (not (is-deleted task))
+                (member project (task-projects task) :test #'string-equal))
+          collect task))
