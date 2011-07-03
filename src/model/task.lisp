@@ -88,15 +88,16 @@ If it doesn't exist, creates new one and add it."
 (defmethod (setf task-body) (body (this <task>))
   (setf (slot-value this 'body) body)
   (let ((projects (parse-projects this)))
-    (setf (task-projects this) projects)
-    (when (current-user)
-      (setf (user-projects (current-user))
-            (append projects (user-projects (current-user)))))))
+    (ensure-transaction ()
+      (setf (task-projects this) projects)
+      (when (current-user)
+        (setf (user-projects (current-user))
+              (append projects (user-projects (current-user))))))))
 
 @export
 (defmethod parse-projects ((this <task>))
   (let (projects)
-    (ppcre:do-matches (s e "#(\\w+)" (task-body this))
+    (ppcre:do-matches (s e "(?<=#)(\\w+)" (task-body this))
      (pushnew
       (subseq (task-body this) s e)
       projects))

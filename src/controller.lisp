@@ -45,6 +45,9 @@
   (render
    "layout.html"
    `(:user ,(aand (current-user) (user-plist it))
+     :projects ,(aif (current-user)
+                 (user-projects it)
+                 nil)
      ,@params)))
 
 @url GET "/"
@@ -55,8 +58,14 @@
      :content "index.html"
      ,@params)))
 
+@url GET "/project/:project"
+(defun project (params)
+  (render-page
+   `(:content "project.html"
+     ,@params)))
+
 @url GET "/tasks"
-(defun my-tasks (params)
+(defun tasks (params)
   "Show a list of owned tasks."
   (render-page
    `(:my-tasks t
@@ -118,7 +127,7 @@
           (get-all-tasks)))
 
 @url GET "/api/my-tasks.json"
-(defun tasks (params)
+(defun my-tasks (params)
   @ignore params
   (format nil "[~{~A~^,~}]"
           (get-user-tasks (current-user))))
@@ -132,7 +141,7 @@
   (format nil "[~{~A~^,~}]" (coerce (task-order) 'list)))
 
 @url GET "/api/my-projects.json"
-(defun projects (params)
+(defun my-projects (params)
   @ignore params
   (format nil "[~{~S~^,~}]"
           (aif (current-user)

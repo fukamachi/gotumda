@@ -43,8 +43,6 @@ got.app.PC = function(baseUri) {
     this.loadMyTasks();
   }
 
-  this.loadMyProjects();
-
   this.listenPostButton_();
 };
 
@@ -75,20 +73,6 @@ got.app.PC.prototype.loadMyTasks = function() {
         got.task.renderLine(task, element);
       });
       this.listenDragEvents_(element);
-    }, this)
-  );
-};
-
-got.app.PC.prototype.loadMyProjects = function() {
-  this.api_.myProjects(
-    goog.bind(function(projects) {
-      var element = goog.dom.getElement('my-projects');
-      goog.array.forEach(projects, function(project) {
-        var a = goog.dom.createDom('a',
-                                   {'href': './projects/'+project.substring(1)},
-                                   project);
-        element.appendChild(a);
-      });
     }, this)
   );
 };
