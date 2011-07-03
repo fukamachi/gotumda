@@ -3,7 +3,6 @@
 body {
   line-height: 150%;
   font-family: "Optima", "Nu Sans", Baskerville, "Times New Roman", "Arial", sans-serif;
-  background-color: #e5e5e5;
   text-align: center;
 }
 
@@ -32,7 +31,6 @@ a:hover {
 
 #container {
   margin: 0 auto;
-  background-color: #e5e5e5;
   width: 600px;
   text-align: left;
 }
