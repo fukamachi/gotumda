@@ -37,7 +37,7 @@ got.task.render = function(task, element) {
   }
 
   var taskBodyEl = goog.dom.createDom('div', 'got-taskitem-body');
-  if (!goog.array.isEmpty(task['projects'])) {
+  if (task['projects'] && !goog.array.isEmpty(task['projects'])) {
     goog.array.forEach(task['projects'], function(project) {
       var a = goog.dom.createDom('a',
                                  {'href': '/project/'+project},
