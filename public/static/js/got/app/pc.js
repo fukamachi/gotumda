@@ -70,6 +70,7 @@ got.app.PC.prototype.loadMyTasks = function() {
       goog.array.forEach(tasks, function(task) {
         got.task.renderLine(task, element);
       });
+      this.listenDragEvents_(element);
     }, this)
   );
 };

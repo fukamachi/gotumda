@@ -9,8 +9,9 @@ body {
 
 .cursor-move {
   cursor: move;
-  width: 600px;
   text-align: left;
+  background-color: #eee;
+  border: 1px solid #ccc;
 }
 
 .dragging {
@@ -135,6 +136,12 @@ h2 {
   height: 80px;
 }
 
+.got-taskitemline {
+  clear: both;
+  height: 20px;
+  padding: 4px;
+}
+
 .got-taskitem img.got-taskitem-owner {
   float: left;
 }
@@ -145,8 +152,20 @@ h2 {
   left: 0;
 }
 
-.got-taskitem-body {
+.got-taskitem .got-taskitem-body {
   height: 70px;
+  float: left;
+}
+.got-taskitemline .got-taskitem-body {
+  width: 360px;
+  float: left;
+}
+
+.got-taskitem-done {
+  float: left;
+}
+
+.got-taskitemline img {
   float: left;
 }
 

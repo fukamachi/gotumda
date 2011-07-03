@@ -67,10 +67,19 @@ got.task.render = function(task, element) {
 got.task.renderLine = function(task, element) {
   element = goog.dom.getElement(element);
 
-  var taskEl = goog.dom.createDom('div', 'got-taskitemline');
-  taskEl.appendChild(goog.dom.createDom('input', {'type': 'checkbox'}));
-  taskEl.appendChild(goog.dom.createDom('img', {'src': task['user']['thumbnailUrl']}));
-  goog.dom.append(taskEl, task['body']);
+  var taskEl = goog.dom.createDom(
+    'div', 'got-taskitemline',
+    goog.dom.createDom(
+      'input',
+      {'class': 'got-taskitem-done', 'type': 'checkbox'}
+    ),
+    goog.dom.createDom(
+      'div', 'got-taskitem-body',
+      goog.dom.createDom(
+        'img', {'src': task['user']['thumbnailUrl']}),
+      task['body']
+    )
+  );
 
   goog.dom.insertChildAt(element, taskEl, 0);
 };
