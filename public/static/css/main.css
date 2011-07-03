@@ -41,7 +41,8 @@ a:hover {
  **/
 
 #header {
-  background-color: black;
+  background: -webkit-gradient(linear, left top, left bottom, from(#555), to(#000));
+  background: -moz-linear-gradient(top, #555, #000);
   position: relative;
   padding: 1px 1px;
   margin-bottom: 5px;
@@ -52,6 +53,7 @@ a:hover {
   margin: 10px 15px;
   font-size: large;
   float: left;
+  text-shadow: -1px -1px gray;
 }
 
 #header h1 a {
@@ -81,10 +83,12 @@ a:hover {
 
 #content-left {
   float: left;
-  background-color: #eee;
-  border: 1px solid #aaa;
-  width: 178px;
+  background: -webkit-gradient(linear, left top, right top, from(#eee), to(#ddd));
+  background: -moz-linear-gradient(left, #eee, #ddd);
+  border: 1px solid #ccc;
+  width: 148px;
   height: 100%;
+  padding: 15px 0 0 15px;
 }
 
 #content-right {
