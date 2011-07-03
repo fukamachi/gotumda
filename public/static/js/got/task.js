@@ -26,9 +26,11 @@ got.task.render = function(task, element) {
 
   var taskEl =  goog.dom.createDom('div', 'got-taskitem');
 
-  taskEl.appendChild(goog.dom.createDom('img',
-                                        {'src': task['owner']['imageUrl'],
-                                         'class': 'got-taskitem-owner'}));
+  taskEl.appendChild(
+    goog.dom.createDom('div', 'profile-image',
+                       goog.dom.createDom('img',
+                                          {'src': task['owner']['imageUrl'],
+                                           'class': 'got-taskitem-owner'})));
   if (task['user']['name'] !== task['owner']['name']) {
     taskEl.appendChild(
       goog.dom.createDom('img', {'src': task['user']['thumbnailUrl'],

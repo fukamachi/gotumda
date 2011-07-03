@@ -64,10 +64,10 @@ If it doesn't exist, creates new one and add it."
             :initarg :body
             :initform ""
             :reader task-body)
-      (user :type (or <user> null)
+      (user :type <user>
             :initarg :user
             :accessor task-user)
-      (owner :type (or <user> null)
+      (owner :type <user>
              :initarg :owner
              :accessor task-owner
              :index t)

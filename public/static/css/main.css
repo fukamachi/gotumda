@@ -234,6 +234,12 @@ a.current {
 }
 
 .got-taskitem-data img {
-  float: none;
   vertical-align: middle;
+}
+
+.profile-image {
+  width: 64px;
+  height: 64px;
+  text-align: center;
+  float: left;
 }
