@@ -23,9 +23,11 @@
             :index t)
       (image-url :type string
                  :initarg :image-url
+                 :initform ""
                  :accessor image-url)
       (thumbnail-url :type string
                      :initarg :thumbnail-url
+                     :initform ""
                      :accessor thumbnail-url)
       (projects :type list
                 :initform nil
@@ -33,8 +35,12 @@
   (:metaclass persistent-metaclass))
 
 @export
-(defun find-user (name)
-  (get-instance-by-value '<user> 'name name))
+(defun find-user (name &key force)
+  (aif (get-instance-by-value '<user> 'name name)
+       it
+       (when force
+         (make-instance '<user>
+            :name name))))
 
 @export
 (defun current-user ()

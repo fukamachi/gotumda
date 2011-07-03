@@ -14,7 +14,8 @@
                 :root-existsp
                 :ensure-transaction)
   (:import-from :cl-ppcre
-                :do-matches)
+                :do-matches
+                :scan-to-strings)
   (:import-from :json
                 :encode-json)
   (:import-from :clack.response
@@ -25,7 +26,8 @@
   (:import-from :gotumda.model.user
                 :<user>
                 :current-user
-                :user-projects)
+                :user-projects
+                :find-user)
   (:export :task-projects
            :is-deleted
            :is-done))
@@ -92,9 +94,15 @@ If it doesn't exist, creates new one and add it."
       (setf (task-projects this) projects)
       (when (current-user)
         (setf (user-projects (current-user))
-              (append projects (user-projects (current-user))))))))
+              (append projects (user-projects (current-user)))))
+      (awhen (parse-owner this)
+        (setf (task-owner this)
+              (find-user it :force t))))))
 
-@export
+(defmethod parse-owner ((this <task>))
+  (awhen (ppcre:scan-to-strings "(?<=@)(\\w+)" (task-body this))
+    it))
+
 (defmethod parse-projects ((this <task>))
   (let (projects)
     (ppcre:do-matches (s e "(?<=#)(\\w+)" (task-body this))

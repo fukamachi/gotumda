@@ -18,8 +18,7 @@
                 :get-user-tasks
                 :get-project-tasks
                 :task-order
-                :copy-task
-                :parse-projects)
+                :copy-task)
   (:import-from :elephant
                 :ensure-transaction
                 :drop-instance)
@@ -86,10 +85,10 @@
            (setf (is-done task) nil))
           ((string= "true" (getf params :|isDone|))
            (setf (is-done task) t)))
-        (awhen (getf params :|body|)
-          (setf (task-body task) it))
         (setf (task-user task) (current-user))
         (setf (task-owner task) (current-user))
+        (awhen (getf params :|body|)
+          (setf (task-body task) it))
         (princ-to-string task)))))
 
 @url POST "/api/copy.json"
