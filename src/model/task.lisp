@@ -12,7 +12,7 @@
                 :add-to-root
                 :get-from-root
                 :root-existsp
-                :with-transaction)
+                :ensure-transaction)
   (:import-from :cl-ppcre
                 :do-matches)
   (:import-from :json
@@ -45,13 +45,13 @@
 If it doesn't exist, creates new one and add it."
   (if (root-existsp "task-order")
       (get-from-root "task-order")
-      (with-transaction ()
+      (ensure-transaction ()
         (add-to-root "task-order"
                      (make-task-order)))))
 
 @export
 (defun (setf task-order) (order)
-  (with-transaction ()
+  (ensure-transaction ()
     (add-to-root "task-order"
                  (make-task-order order))))
 
@@ -95,7 +95,7 @@ If it doesn't exist, creates new one and add it."
 (defmethod initialize-instance :after ((this <task>) &key)
   "Put the object ID into the task order collection."
   (vector-push-extend (object-id this) (task-order))
-  (with-transaction ()
+  (ensure-transaction ()
     (setf (task-projects this) (parse-projects this))
     (add-to-root "task-order"
                  (task-order))))

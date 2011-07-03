@@ -39,6 +39,10 @@ got.Api.prototype.myTasks = function(callback) {
   this.sendRequest('api/my-tasks.json', 'GET', null, callback);
 };
 
+got.Api.prototype.myProjects = function(callback) {
+  this.sendRequest('api/my-projects.json', 'GET', null, callback);
+};
+
 /**
  * Request to 'api/update.json'.
  * @param {(String|Number)=} id

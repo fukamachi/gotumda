@@ -4,7 +4,8 @@
         :arnesi)
   (:import-from :elephant
                 :persistent-metaclass
-                :get-instance-by-value))
+                :get-instance-by-value)
+  (:export :user-projects))
 
 (cl-annot:enable-annot-syntax)
 
@@ -22,7 +23,10 @@
                      :accessor thumbnail-url)
       (tasks :type list
              :initform nil
-             :accessor user-tasks))
+             :accessor user-tasks)
+      (projects :type list
+                :initform nil
+                :accessor user-projects))
   (:metaclass persistent-metaclass))
 
 @export

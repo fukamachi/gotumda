@@ -20,7 +20,7 @@
                 :copy-task
                 :parse-projects)
   (:import-from :elephant
-                :with-transaction
+                :ensure-transaction
                 :drop-instance)
   (:import-from :gotumda.util.elephant
                 :object-id)
@@ -28,7 +28,8 @@
                 :headers)
   (:import-from :gotumda.model.user
                 :current-user
-                :user-plist))
+                :user-plist
+                :user-projects))
 
 (cl-annot:enable-annot-syntax)
 
@@ -60,7 +61,7 @@
 (defun update (params)
   "Create/Edit a task. Allowed parameters are `id', `body' and `is-done'."
   (when (current-user)
-    (with-transaction ()
+    (ensure-transaction ()
       (let ((task (aif (getf params :|id|)
                        (get-task-by-id it)
                        (make-instance '<task>))))
@@ -71,7 +72,10 @@
            (setf (is-done task) t)))
         (awhen (getf params :|body|)
           (setf (task-body task) it)
-          (setf (task-projects task) (parse-projects task)))
+          (let ((projects (parse-projects task)))
+            (setf (task-projects task) projects)
+            (setf (user-projects (current-user))
+                  (append projects (user-projects (current-user))))))
         (setf (task-user task) (current-user))
         (setf (task-owner task) (current-user))
         (princ-to-string task)))))
@@ -80,7 +84,7 @@
 (defun copy (params)
   "Copy a task to my task."
   (awhen (getf params :|id|)
-    (with-transaction ()
+    (ensure-transaction ()
       (let ((task (copy-task (get-task-by-id it))))
         (setf (task-owner task) (current-user))
         (setf (task-user task) (current-user))
@@ -90,7 +94,7 @@
 (defun move (params)
   "Move the task to my task."
   (awhen (getf params :|id|)
-    (with-transaction ()
+    (ensure-transaction ()
       (let ((task (get-task-by-id it)))
         (setf (task-owner task) (current-user))
         (princ-to-string task)))))
@@ -99,7 +103,7 @@
 (defun destroy (params)
   "Delete a task."
    (aif (get-task-by-id (getf params :|id|))
-        (with-transaction ()
+        (ensure-transaction ()
          (drop-instance it)
          "true")
         "false"))
@@ -124,3 +128,10 @@
         (mapcar #'parse-integer
                 (split-sequence #\, (getf params :|order|))))
   (format nil "[~{~A~^,~}]" (coerce (task-order) 'list)))
+
+@url GET "/api/my-projects.json"
+(defun projects (params)
+  @ignore params
+  (awhen (current-user)
+    (format nil "[~{~S~^,~}]"
+            (user-projects it))))
