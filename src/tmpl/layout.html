@@ -21,13 +21,15 @@
   <div id="content-left">
     <a href="/"<% @if timeline %> class="current"<% @endif %>>Timeline</a>
     <% @if user %>
-    <a href="/tasks"<% @if my-tasks %> class="current"<% @endif %>>My Tasks</a>
+    <a href="/tasks"<% @if my-tasks %> class="current"<% @endif %>>My Tasks
+      <div class="count"><%= (length (gotumda.model.task:get-user-tasks (gotumda.model.user:current-user))) %></div>
+    </a>
     <hr />
     <div id="my-projects">
       <% @loop projects %>
       <a href="/project/<%= env %>"<% (when (string= (format nil "/project/~A" env) (clack.request:path-info caveman:*request*)) %> class="current"<% ) %>>
         #<%= env %>
-        <div class="delete"></div>
+        <div class="count"><%= (length (gotumda.model.task:get-project-tasks env)) %></div>
       </a>
       <% @endloop %>
     </div>

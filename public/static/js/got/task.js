@@ -38,6 +38,9 @@ got.task.render = function(task, element) {
     );
   }
 
+  var taskOwnerEl = goog.dom.createDom('div', 'got-taskitem-owner', task['owner']['name']);
+  taskEl.appendChild(taskOwnerEl);
+
   var taskBodyEl = goog.dom.createDom('div', 'got-taskitem-body');
   if (task['projects'] && !goog.array.isEmpty(task['projects'])) {
     goog.array.forEach(task['projects'], function(project) {
