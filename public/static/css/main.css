@@ -31,7 +31,7 @@ a:hover {
 
 #container {
   margin: 0 auto;
-  width: 600px;
+  width: 800px;
   text-align: left;
 }
 
@@ -51,6 +51,7 @@ h2 {
   padding: 1px 1px;
   margin-bottom: 5px;
   height: 40px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.4);
 }
 
 #header h1 {
@@ -89,9 +90,10 @@ h2 {
   float: left;
   background-color: rgb(228,236,246);
   border: 1px solid rgb(177,197,218);
-  width: 148px;
+  width: 188px;
   height: 100%;
   padding: 15px 0 0;
+  margin-left: 5px;
 }
 
 #content-left a {
@@ -100,7 +102,6 @@ h2 {
   text-decoration: none;
   padding-left: 8px;
   cursor: pointer;
-  width: 141px;
 }
 
 #content-left a:hover {
@@ -115,13 +116,14 @@ a.current {
   font-weight: bold;
   border-top: 1px solid rgb(177,197,218);
   border-bottom: 1px solid rgb(177,197,218);
+  width: 181px;
 }
 
 #content-right {
   float: left;
-  width: 400px;
+  width: 530px;
   height: 100%;
-  padding: 10px 0 0 20px;
+  padding: 10px 0 0 40px;
 }
 
 #got-post-button {
